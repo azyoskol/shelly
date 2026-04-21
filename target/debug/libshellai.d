@@ -1,0 +1,1 @@
+/home/zubarev/sources/shelly/target/debug/libshellai.rlib: /home/zubarev/sources/shelly/src/ai/mod.rs /home/zubarev/sources/shelly/src/fish/mod.rs /home/zubarev/sources/shelly/src/lib.rs /home/zubarev/sources/shelly/src/plugin/mock_plugin.rs /home/zubarev/sources/shelly/src/plugin/mod.rs /home/zubarev/sources/shelly/src/starship/mod.rs /home/zubarev/sources/shelly/src/zsh/mod.rs
