@@ -37,27 +37,27 @@ pub fn preexec<P: ShellPlugin>(
 /// Generates Zsh hook installation code for .zshrc.
 ///
 /// This function outputs the zshrc snippet that users can add to their
-/// ~/.zshrc to enable ShellAI hooks in their actual Zsh environment.
+/// ~/.zshrc to enable Shally hooks in their actual Zsh environment.
 pub fn generate_zshrc_snippet(binary_path: &str) -> String {
     format!(
-        r#"# ShellAI Framework - Zsh Integration
-# Add this to your ~/.zshrc to enable ShellAI hooks
+        r#"# Shally Framework - Zsh Integration
+# Add this to your ~/.zshrc to enable Shally hooks
 
-# Load shellai binary on precmd
-precmd_shellai() {{
+# Load shally binary on precmd
+precmd_shally() {{
     {binary_path} --hook precmd
 }}
 
-# Load shellai binary on preexec
-preexec_shellai() {{
+# Load shally binary on preexec
+preexec_shally() {{
     {binary_path} --hook preexec "$1"
 }}
 
 autoload -Uz precmd_functions
 autoload -Uz preexec_functions
 
-precmd_functions+=(precmd_shellai)
-preexec_functions+=(preexec_shellai)
+precmd_functions+=(precmd_shally)
+preexec_functions+=(preexec_shally)
 "#,
         binary_path = binary_path
     )
@@ -94,10 +94,10 @@ mod tests {
 
     #[test]
     fn test_generate_zshrc_snippet() {
-        let snippet = generate_zshrc_snippet("/usr/local/bin/shellai");
-        assert!(snippet.contains("precmd_shellai"));
-        assert!(snippet.contains("preexec_shellai"));
-        assert!(snippet.contains("/usr/local/bin/shellai"));
+        let snippet = generate_zshrc_snippet("/usr/local/bin/shally");
+        assert!(snippet.contains("precmd_shally"));
+        assert!(snippet.contains("preexec_shally"));
+        assert!(snippet.contains("/usr/local/bin/shally"));
         assert!(snippet.contains("precmd_functions"));
         assert!(snippet.contains("preexec_functions"));
     }

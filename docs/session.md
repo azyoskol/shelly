@@ -273,7 +273,7 @@ Let me read the current source files to plan the exact changes.
 <type>file</type>
 <content>
 1: [package]
-2: name = "shellai"
+2: name = "shally"
 3: version = "0.1.0"
 4: edition = "2021"
 5: 
@@ -329,11 +329,11 @@ Let me read the current source files to plan the exact changes.
 <type>file</type>
 <content>
 1: // src/main.rs
-2: use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
-3: use shellai::zsh;
-4: use shellai::fish;
-5: use shellai::starship;
-6: use shellai::ai::AiIntegration;
+2: use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
+3: use shally::zsh;
+4: use shally::fish;
+5: use shally::starship;
+6: use shally::ai::AiIntegration;
 7: use std::env;
 8: 
 9: fn main() {
@@ -388,13 +388,13 @@ Let me read the current source files to plan the exact changes.
 58:     }
 59: 
 60:     if args.len() > 1 && args[1] == "--install" {
-61:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+61:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 62:         println!("{}", zsh::generate_zshrc_snippet(binary_path));
 63:         return;
 64:     }
 65: 
 66:     if args.len() > 1 && args[1] == "--fish-install" {
-67:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+67:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 68:         println!("{}", fish::generate_config_snippet(binary_path));
 69:         return;
 70:     }
@@ -435,7 +435,7 @@ Let me read the current source files to plan the exact changes.
 105:         return;
 106:     }
 107: 
-108:     println!("ShellAI Framework: Initializing core...");
+108:     println!("Shally Framework: Initializing core...");
 109: 
 110:     let config = PluginConfig {
 111:         shell_name: "zsh".to_string(),
@@ -457,7 +457,7 @@ Let me read the current source files to plan the exact changes.
 127:         Err(e) => eprintln!("Error during pre-hook: {}", e),
 128:     }
 129: 
-130:     println!("\nShellAI Framework Initialized successfully.");
+130:     println!("\nShally Framework Initialized successfully.");
 131: }
 
 (End of file - total 131 lines)
@@ -941,7 +941,7 @@ I need to read all three markdown files in the docs folder.
 <path>/home/zubarev/sources/shelly/docs/phase_1_mvp_plan.md</path>
 <type>file</type>
 <content>
-1: # ShellAI Framework Development Plan: Phase 1 (MVP) - FINAL BUILD PLAN
+1: # Shally Framework Development Plan: Phase 1 (MVP) - FINAL BUILD PLAN
 2: 
 3: ## Overview
 4: The objective of Phase 1 is to establish a stable, modular shell framework foundation built in Rust. This phase shifts us from research/planning mode into the initial implementation stage. We will focus on achieving superior user experience through advanced context awareness and AI-driven command suggestions, ensuring compatibility with Zsh, Fish, and Starship right from the start.
@@ -1031,7 +1031,7 @@ I need to read all three markdown files in the docs folder.
 <path>/home/zubarev/sources/shelly/docs/progress.md</path>
 <type>file</type>
 <content>
-1: # ShellAI Framework Progress Report
+1: # Shally Framework Progress Report
 2: 
 3: ## ✅ Completed Tasks
 4: 
@@ -1182,7 +1182,7 @@ I need to read all three markdown files in the docs folder.
 42: #### `test_generate_zshrc_snippet`
 43: **Type:** Unit Test
 44: **Goal:** Verify zshrc snippet generation for .zshrc installation.
-45: **Verification:** Output contains `precmd_shellai`, `preexec_shellai`, `precmd_functions`, and binary path.
+45: **Verification:** Output contains `precmd_shally`, `preexec_shally`, `precmd_functions`, and binary path.
 46: 
 47: ---
 48: 
@@ -1201,7 +1201,7 @@ I need to read all three markdown files in the docs folder.
 61: #### `test_generate_config_snippet`
 62: **Type:** Unit Test
 63: **Goal:** Verify config.fish snippet generation for Fish installation.
-64: **Verification:** Output contains `shellai_prompt`, `shellai_command_not_found`, `fish_prompt`, and binary path.
+64: **Verification:** Output contains `shally_prompt`, `shally_command_not_found`, `fish_prompt`, and binary path.
 65: 
 66: ---
 67: 
@@ -1355,7 +1355,7 @@ Let's review the conversation:
 7. I retried with correct schema to explore the codebase structure, dependencies, and existing config handling.
 8. The sub-agent returned a detailed summary of the codebase: `Cargo.toml` (reqwest, serde, serde_json), `src/lib.rs`, `src/main.rs`, `src/plugin/mod.rs` (`PluginConfig` struct with `shell_name` and `settings` HashMap, no derive macros yet), `src/ai/mod.rs` (`AiIntegration` struct).
 9. I read the actual files to confirm: `Cargo.toml`, `lib.rs`, `main.rs`, `plugin/mod.rs`, `ai/mod.rs`.
-10. The goal is to implement a configuration loader for the ShellAI framework in Rust.
+10. The goal is to implement a configuration loader for the Shally framework in Rust.
 
 Key technical facts:
 - Project: `/home/zubarev/sources/shelly`
@@ -1389,7 +1389,7 @@ Structure required:
 ---
 
 I will fill this out based on the conversation.
-Goal: Implement a configuration loader for the ShellAI Rust framework to support YAML/JSON config files.
+Goal: Implement a configuration loader for the Shally Rust framework to support YAML/JSON config files.
 Constraints & Preferences: Use Rust; integrate with existing `PluginConfig` and CLI; follow Phase 1 MVP plan.
 Progress Done: Read docs, identified next steps, explored codebase structure and dependencies.
 In Progress: Designing/implementing the configuration loader module.
@@ -1416,7 +1416,7 @@ Output generation.
 ```markdown
 ---
 ## Goal
-- Implement a configuration loader for the ShellAI Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.
+- Implement a configuration loader for the Shally Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.
 
 ## Constraints & Preferences
 - Language: Rust
@@ -1491,7 +1491,7 @@ Output matches response.
 
 ---
 ## Goal
-- Implement a configuration loader for the ShellAI Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.
+- Implement a configuration loader for the Shally Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.
 
 ## Constraints & Preferences
 - Language: Rust
@@ -1561,7 +1561,7 @@ Looking at the "## goal" block, I can see the full context of what's been done a
 **Input:**
 ```json
 {
-  "content": "# ShellAI Session Log\n\n## Goal\nImplement a configuration loader for the ShellAI Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.\n\n## Progress\n\n### Completed\n- Read and analyzed all documentation in `docs/` (`phase_1_mvp_plan.md`, `test_scenarios.md`, `progress.md`)\n- Identified next development steps per project roadmap\n- Explored codebase structure, dependencies, and existing configuration handling patterns\n\n### In Progress\n- Designing and implementing the configuration loader module\n\n### Blocked\n- (none)\n\n## Key Decisions\n- Selected configuration loader as the immediate next step over shell testing or history search\n- Will likely introduce a config parsing crate (e.g., `toml`, `config`, or `serde_yaml`) to handle file deserialization\n- `PluginConfig` will be updated with `#[derive(Serialize, Deserialize)]` for seamless integration\n\n## Next Steps\n- Add appropriate config parsing dependency to `Cargo.toml`\n- Update `src/plugin/mod.rs` to add serde derives to `PluginConfig`\n- Create a dedicated `config` module or loader function to read/parse config files\n- Integrate config loading into `src/main.rs` CLI workflow (fallback to defaults/env vars)\n- Add unit tests for config parsing and validation\n\n## Critical Context\n- Current `PluginConfig` in `src/plugin/mod.rs` lacks serialization/deserialization derives\n- CLI args are manually parsed via `std::env::args()` in `src/main.rs`\n- No explicit config file format was chosen yet; docs mention YAML/JSON support\n- Existing dependencies: `reqwest`, `serde`, `serde_json`\n\n## Relevant Files\n- `Cargo.toml` — dependency management, needs new config parser crate\n- `src/plugin/mod.rs` — contains `PluginConfig` struct requiring serde derives\n- `src/main.rs` — CLI entry point where config loading will be integrated\n- `docs/progress.md` — tracks project milestones and next steps\n\n---\n*Saved: 2026-04-23*\n",
+  "content": "# Shally Session Log\n\n## Goal\nImplement a configuration loader for the Shally Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.\n\n## Progress\n\n### Completed\n- Read and analyzed all documentation in `docs/` (`phase_1_mvp_plan.md`, `test_scenarios.md`, `progress.md`)\n- Identified next development steps per project roadmap\n- Explored codebase structure, dependencies, and existing configuration handling patterns\n\n### In Progress\n- Designing and implementing the configuration loader module\n\n### Blocked\n- (none)\n\n## Key Decisions\n- Selected configuration loader as the immediate next step over shell testing or history search\n- Will likely introduce a config parsing crate (e.g., `toml`, `config`, or `serde_yaml`) to handle file deserialization\n- `PluginConfig` will be updated with `#[derive(Serialize, Deserialize)]` for seamless integration\n\n## Next Steps\n- Add appropriate config parsing dependency to `Cargo.toml`\n- Update `src/plugin/mod.rs` to add serde derives to `PluginConfig`\n- Create a dedicated `config` module or loader function to read/parse config files\n- Integrate config loading into `src/main.rs` CLI workflow (fallback to defaults/env vars)\n- Add unit tests for config parsing and validation\n\n## Critical Context\n- Current `PluginConfig` in `src/plugin/mod.rs` lacks serialization/deserialization derives\n- CLI args are manually parsed via `std::env::args()` in `src/main.rs`\n- No explicit config file format was chosen yet; docs mention YAML/JSON support\n- Existing dependencies: `reqwest`, `serde`, `serde_json`\n\n## Relevant Files\n- `Cargo.toml` — dependency management, needs new config parser crate\n- `src/plugin/mod.rs` — contains `PluginConfig` struct requiring serde derives\n- `src/main.rs` — CLI entry point where config loading will be integrated\n- `docs/progress.md` — tracks project milestones and next steps\n\n---\n*Saved: 2026-04-23*\n",
   "filePath": "/home/zubarev/sources/shelly/docs/session.md"
 }
 ```
@@ -1608,7 +1608,7 @@ A user message asked me to save the current session to docs/session.md, which I 
 
 _Thinking:_
 
-The user wants me to add a YAML configuration loader for the ShellAI framework. Let me:
+The user wants me to add a YAML configuration loader for the Shally framework. Let me:
 
 1. Add `serde_yaml` dependency to `Cargo.toml`
 2. Update `PluginConfig` in `src/plugin/mod.rs` with serde derives
@@ -1641,7 +1641,7 @@ Let me start by reading the relevant files to understand the current state.
 <type>file</type>
 <content>
 1: [package]
-2: name = "shellai"
+2: name = "shally"
 3: version = "0.1.0"
 4: edition = "2021"
 5: 
@@ -1719,11 +1719,11 @@ Let me start by reading the relevant files to understand the current state.
 <type>file</type>
 <content>
 1: // src/main.rs
-2: use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
-3: use shellai::zsh;
-4: use shellai::fish;
-5: use shellai::starship;
-6: use shellai::ai::AiIntegration;
+2: use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
+3: use shally::zsh;
+4: use shally::fish;
+5: use shally::starship;
+6: use shally::ai::AiIntegration;
 7: use std::env;
 8: 
 9: fn main() {
@@ -1778,13 +1778,13 @@ Let me start by reading the relevant files to understand the current state.
 58:     }
 59: 
 60:     if args.len() > 1 && args[1] == "--install" {
-61:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+61:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 62:         println!("{}", zsh::generate_zshrc_snippet(binary_path));
 63:         return;
 64:     }
 65: 
 66:     if args.len() > 1 && args[1] == "--fish-install" {
-67:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+67:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 68:         println!("{}", fish::generate_config_snippet(binary_path));
 69:         return;
 70:     }
@@ -1825,7 +1825,7 @@ Let me start by reading the relevant files to understand the current state.
 105:         return;
 106:     }
 107: 
-108:     println!("ShellAI Framework: Initializing core...");
+108:     println!("Shally Framework: Initializing core...");
 109: 
 110:     let config = PluginConfig {
 111:         shell_name: "zsh".to_string(),
@@ -1847,7 +1847,7 @@ Let me start by reading the relevant files to understand the current state.
 127:         Err(e) => eprintln!("Error during pre-hook: {}", e),
 128:     }
 129: 
-130:     println!("\nShellAI Framework Initialized successfully.");
+130:     println!("\nShally Framework Initialized successfully.");
 131: }
 
 (End of file - total 131 lines)
@@ -1990,7 +1990,7 @@ Now let me create the config module with YAML loading functionality.
 **Input:**
 ```json
 {
-  "content": "use std::fs;\nuse std::path::{Path, PathBuf};\nuse crate::plugin::PluginConfig;\n\nconst DEFAULT_CONFIG_FILENAME: &str = \"shellai.yaml\";\n\n/// Attempts to load PluginConfig from a YAML file at the given path.\n/// Returns Default config if file doesn't exist or can't be parsed.\npub fn load_config(path: &Path) -> PluginConfig {\n    load_config_from_path(path).unwrap_or_default()\n}\n\n/// Internal helper that returns Option so callers can distinguish \"not found\" from \"bad file\".\npub fn load_config_from_path(path: &Path) -> Option<PluginConfig> {\n    let contents = fs::read_to_string(path).ok()?;\n    let config: PluginConfig = serde_yaml::from_str(&contents).ok()?;\n    Some(config)\n}\n\n/// Resolves the config file path from CLI argument, environment variable, or default locations.\n/// Returns None if no config file is found anywhere.\npub fn resolve_config_path(explicit_path: Option<&str>) -> Option<PathBuf> {\n    // 1. Explicit --config path\n    if let Some(p) = explicit_path {\n        return Some(PathBuf::from(p));\n    }\n\n    // 2. SHELLAI_CONFIG environment variable\n    if let Ok(env_path) = std::env::var(\"SHELLAI_CONFIG\") {\n        let p = PathBuf::from(&env_path);\n        if p.exists() {\n            return Some(p);\n        }\n    }\n\n    // 3. Check default locations: current dir, then home dir\n    let candidates = [\n        PathBuf::from(DEFAULT_CONFIG_FILENAME),\n        dirs_home(),\n    ];\n\n    for candidate in &candidates {\n        if candidate.exists() {\n            return Some(candidate.clone());\n        }\n    }\n\n    None\n}\n\n/// Returns the path to ~/.shellai.yaml, or None if home dir can't be determined.\nfn dirs_home() -> PathBuf {\n    std::env::var(\"HOME\")\n        .map(|h| PathBuf::from(h).join(DEFAULT_CONFIG_FILENAME))\n        .unwrap_or_else(|_| PathBuf::from(DEFAULT_CONFIG_FILENAME))\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n    use std::collections::HashMap;\n    use serde_yaml;\n\n    #[test]\n    fn test_load_valid_yaml() {\n        let yaml = r#\"\nshell_name: fish\nsettings:\n  api_endpoint: \"https://api.example.com\"\n  timeout: \"30\"\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"fish\");\n        assert_eq!(config.settings.get(\"api_endpoint\").unwrap(), \"https://api.example.com\");\n        assert_eq!(config.settings.get(\"timeout\").unwrap(), \"30\");\n    }\n\n    #[test]\n    fn test_load_minimal_yaml() {\n        let yaml = r#\"\nshell_name: zsh\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"zsh\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_load_empty_settings() {\n        let yaml = r#\"\nshell_name: fish\nsettings: {}\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"fish\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_default_shell_name() {\n        let yaml = r#\"\nsettings:\n  key: \"value\"\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"zsh\");\n        assert_eq!(config.settings.get(\"key\").unwrap(), \"value\");\n    }\n\n    #[test]\n    fn test_full_default() {\n        let yaml = r#\"{}\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"zsh\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_invalid_yaml_returns_none() {\n        let yaml = \"this is not: valid: yaml: [\";\n        let result: Result<PluginConfig, _> = serde_yaml::from_str(yaml);\n        assert!(result.is_err());\n    }\n\n    #[test]\n    fn test_load_config_from_nonexistent_path() {\n        let path = Path::new(\"/tmp/shellai_nonexistent_test.yaml\");\n        let config = load_config(path);\n        assert_eq!(config.shell_name, \"zsh\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_resolve_config_path_explicit() {\n        let path = resolve_config_path(Some(\"/tmp/explicit.yaml\"));\n        assert!(path.is_some());\n        assert_eq!(path.unwrap().file_name().unwrap(), \"explicit.yaml\");\n    }\n}\n",
+  "content": "use std::fs;\nuse std::path::{Path, PathBuf};\nuse crate::plugin::PluginConfig;\n\nconst DEFAULT_CONFIG_FILENAME: &str = \"shally.yaml\";\n\n/// Attempts to load PluginConfig from a YAML file at the given path.\n/// Returns Default config if file doesn't exist or can't be parsed.\npub fn load_config(path: &Path) -> PluginConfig {\n    load_config_from_path(path).unwrap_or_default()\n}\n\n/// Internal helper that returns Option so callers can distinguish \"not found\" from \"bad file\".\npub fn load_config_from_path(path: &Path) -> Option<PluginConfig> {\n    let contents = fs::read_to_string(path).ok()?;\n    let config: PluginConfig = serde_yaml::from_str(&contents).ok()?;\n    Some(config)\n}\n\n/// Resolves the config file path from CLI argument, environment variable, or default locations.\n/// Returns None if no config file is found anywhere.\npub fn resolve_config_path(explicit_path: Option<&str>) -> Option<PathBuf> {\n    // 1. Explicit --config path\n    if let Some(p) = explicit_path {\n        return Some(PathBuf::from(p));\n    }\n\n    // 2. SHELLAI_CONFIG environment variable\n    if let Ok(env_path) = std::env::var(\"SHELLAI_CONFIG\") {\n        let p = PathBuf::from(&env_path);\n        if p.exists() {\n            return Some(p);\n        }\n    }\n\n    // 3. Check default locations: current dir, then home dir\n    let candidates = [\n        PathBuf::from(DEFAULT_CONFIG_FILENAME),\n        dirs_home(),\n    ];\n\n    for candidate in &candidates {\n        if candidate.exists() {\n            return Some(candidate.clone());\n        }\n    }\n\n    None\n}\n\n/// Returns the path to ~/.shally.yaml, or None if home dir can't be determined.\nfn dirs_home() -> PathBuf {\n    std::env::var(\"HOME\")\n        .map(|h| PathBuf::from(h).join(DEFAULT_CONFIG_FILENAME))\n        .unwrap_or_else(|_| PathBuf::from(DEFAULT_CONFIG_FILENAME))\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n    use std::collections::HashMap;\n    use serde_yaml;\n\n    #[test]\n    fn test_load_valid_yaml() {\n        let yaml = r#\"\nshell_name: fish\nsettings:\n  api_endpoint: \"https://api.example.com\"\n  timeout: \"30\"\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"fish\");\n        assert_eq!(config.settings.get(\"api_endpoint\").unwrap(), \"https://api.example.com\");\n        assert_eq!(config.settings.get(\"timeout\").unwrap(), \"30\");\n    }\n\n    #[test]\n    fn test_load_minimal_yaml() {\n        let yaml = r#\"\nshell_name: zsh\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"zsh\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_load_empty_settings() {\n        let yaml = r#\"\nshell_name: fish\nsettings: {}\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"fish\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_default_shell_name() {\n        let yaml = r#\"\nsettings:\n  key: \"value\"\n\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"zsh\");\n        assert_eq!(config.settings.get(\"key\").unwrap(), \"value\");\n    }\n\n    #[test]\n    fn test_full_default() {\n        let yaml = r#\"{}\"#;\n        let config: PluginConfig = serde_yaml::from_str(yaml).unwrap();\n        assert_eq!(config.shell_name, \"zsh\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_invalid_yaml_returns_none() {\n        let yaml = \"this is not: valid: yaml: [\";\n        let result: Result<PluginConfig, _> = serde_yaml::from_str(yaml);\n        assert!(result.is_err());\n    }\n\n    #[test]\n    fn test_load_config_from_nonexistent_path() {\n        let path = Path::new(\"/tmp/shally_nonexistent_test.yaml\");\n        let config = load_config(path);\n        assert_eq!(config.shell_name, \"zsh\");\n        assert!(config.settings.is_empty());\n    }\n\n    #[test]\n    fn test_resolve_config_path_explicit() {\n        let path = resolve_config_path(Some(\"/tmp/explicit.yaml\"));\n        assert!(path.is_some());\n        assert_eq!(path.unwrap().file_name().unwrap(), \"explicit.yaml\");\n    }\n}\n",
   "filePath": "/home/zubarev/sources/shelly/src/config/mod.rs"
 }
 ```
@@ -2047,7 +2047,7 @@ Now let me update main.rs to integrate the config loader with a `--config` flag.
 **Input:**
 ```json
 {
-  "content": "use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};\nuse shellai::config;\nuse shellai::zsh;\nuse shellai::fish;\nuse shellai::starship;\nuse shellai::ai::AiIntegration;\nuse std::env;\n\nfn main() {\n    let args: Vec<String> = env::args().collect();\n\n    // Resolve config from --config flag, env var, or default locations\n    let explicit_config = args.iter()\n        .position(|a| a == \"--config\")\n        .and_then(|i| args.get(i + 1))\n        .map(|s| s.as_str());\n\n    let base_config = if let Some(path) = config::resolve_config_path(explicit_config) {\n        match config::load_config_from_path(&std::path::PathBuf::from(path.clone())) {\n            Some(c) => {\n                println!(\"Configuration loaded from: {}\", path.display());\n                c\n            }\n            None => {\n                eprintln!(\"Warning: Could not parse config file {}, using defaults.\", path.display());\n                PluginConfig::default()\n            }\n        }\n    } else {\n        PluginConfig::default()\n    };\n\n    if args.len() > 2 && args[1] == \"--hook\" {\n        let hook_type = args[2].as_str();\n        let mut context = ShellContext::new();\n        let config = PluginConfig {\n            shell_name: \"zsh\".to_string(),\n            settings: base_config.settings.clone(),\n            ..base_config.clone()\n        };\n        let _ = MockPlugin::initialize(&config);\n\n        match hook_type {\n            \"precmd\" => {\n                let _ = zsh::precmd::<MockPlugin>(&mut context);\n            }\n            \"preexec\" => {\n                let command = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n                let _ = zsh::preexec::<MockPlugin>(command, 0, &mut context);\n            }\n            _ => {\n                eprintln!(\"Unknown hook type: {}\", hook_type);\n            }\n        }\n        return;\n    }\n\n    if args.len() > 2 && args[1] == \"--fish-hook\" {\n        let hook_type = args[2].as_str();\n        let mut context = ShellContext::new();\n        let config = PluginConfig {\n            shell_name: \"fish\".to_string(),\n            settings: base_config.settings.clone(),\n            ..base_config.clone()\n        };\n        let _ = MockPlugin::initialize(&config);\n\n        match hook_type {\n            \"prompt\" => {\n                let _ = fish::prompt::<MockPlugin>(&mut context);\n            }\n            \"command_not_found\" => {\n                let command = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n                let _ = fish::command_not_found::<MockPlugin>(command, &mut context);\n            }\n            _ => {\n                eprintln!(\"Unknown fish hook type: {}\", hook_type);\n            }\n        }\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--install\" {\n        let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or(\"shellai\");\n        println!(\"{}\", zsh::generate_zshrc_snippet(binary_path));\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--fish-install\" {\n        let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or(\"shellai\");\n        println!(\"{}\", fish::generate_config_snippet(binary_path));\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--export-context\" {\n        let mut context = ShellContext::new();\n        context.insert(\"CURRENT_DIR\".to_string(), env::current_dir()\n            .map(|p| p.to_string_lossy().to_string())\n            .unwrap_or_default());\n        let exports = starship::export_context(&context);\n        for (key, value) in exports {\n            println!(\"{}={}\", key, value);\n        }\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--ai-config\" {\n        let endpoint = args.get(2).map(|s| s.as_str()).unwrap_or(\"https://api.openai.com/v1/chat/completions\");\n        let api_key = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n        let model = args.get(4).map(|s| s.as_str()).unwrap_or(\"gpt-3.5-turbo\");\n\n        let mut ai = AiIntegration::new();\n        ai.with_config(endpoint, api_key).with_model(model);\n\n        let context = ShellContext::new();\n        let history: Vec<String> = vec![];\n\n        match ai.suggest_command(&context, &history) {\n            Ok(suggestion) => {\n                println!(\"Command: {}\", suggestion.command);\n                if let Some(exp) = suggestion.explanation {\n                    println!(\"Explanation: {}\", exp);\n                }\n                println!(\"Confidence: {:.2}\", suggestion.confidence);\n            }\n            Err(e) => eprintln!(\"AI suggestion failed: {}\", e),\n        }\n        return;\n    }\n\n    println!(\"ShellAI Framework: Initializing core...\");\n\n    let config = base_config.clone();\n    println!(\"Configuration loaded for shell: {}\", config.shell_name);\n\n    let mut context = ShellContext::new();\n\n    if let Ok(_) = MockPlugin::initialize(&config) {\n        println!(\"✅ MockPlugin Initialized successfully.\");\n    } else {\n        eprintln!(\"❌ Initialization failed.\");\n        return;\n    }\n\n    match MockPlugin::pre_prompt_hook(&mut context) {\n        Ok(_) => println!(\"\\n✨ Pre-Prompt Hook executed. Context updated: {:?}\", context),\n        Err(e) => eprintln!(\"Error during pre-hook: {}\", e),\n    }\n\n    println!(\"\\nShellAI Framework Initialized successfully.\");\n}\n",
+  "content": "use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};\nuse shally::config;\nuse shally::zsh;\nuse shally::fish;\nuse shally::starship;\nuse shally::ai::AiIntegration;\nuse std::env;\n\nfn main() {\n    let args: Vec<String> = env::args().collect();\n\n    // Resolve config from --config flag, env var, or default locations\n    let explicit_config = args.iter()\n        .position(|a| a == \"--config\")\n        .and_then(|i| args.get(i + 1))\n        .map(|s| s.as_str());\n\n    let base_config = if let Some(path) = config::resolve_config_path(explicit_config) {\n        match config::load_config_from_path(&std::path::PathBuf::from(path.clone())) {\n            Some(c) => {\n                println!(\"Configuration loaded from: {}\", path.display());\n                c\n            }\n            None => {\n                eprintln!(\"Warning: Could not parse config file {}, using defaults.\", path.display());\n                PluginConfig::default()\n            }\n        }\n    } else {\n        PluginConfig::default()\n    };\n\n    if args.len() > 2 && args[1] == \"--hook\" {\n        let hook_type = args[2].as_str();\n        let mut context = ShellContext::new();\n        let config = PluginConfig {\n            shell_name: \"zsh\".to_string(),\n            settings: base_config.settings.clone(),\n            ..base_config.clone()\n        };\n        let _ = MockPlugin::initialize(&config);\n\n        match hook_type {\n            \"precmd\" => {\n                let _ = zsh::precmd::<MockPlugin>(&mut context);\n            }\n            \"preexec\" => {\n                let command = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n                let _ = zsh::preexec::<MockPlugin>(command, 0, &mut context);\n            }\n            _ => {\n                eprintln!(\"Unknown hook type: {}\", hook_type);\n            }\n        }\n        return;\n    }\n\n    if args.len() > 2 && args[1] == \"--fish-hook\" {\n        let hook_type = args[2].as_str();\n        let mut context = ShellContext::new();\n        let config = PluginConfig {\n            shell_name: \"fish\".to_string(),\n            settings: base_config.settings.clone(),\n            ..base_config.clone()\n        };\n        let _ = MockPlugin::initialize(&config);\n\n        match hook_type {\n            \"prompt\" => {\n                let _ = fish::prompt::<MockPlugin>(&mut context);\n            }\n            \"command_not_found\" => {\n                let command = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n                let _ = fish::command_not_found::<MockPlugin>(command, &mut context);\n            }\n            _ => {\n                eprintln!(\"Unknown fish hook type: {}\", hook_type);\n            }\n        }\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--install\" {\n        let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or(\"shally\");\n        println!(\"{}\", zsh::generate_zshrc_snippet(binary_path));\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--fish-install\" {\n        let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or(\"shally\");\n        println!(\"{}\", fish::generate_config_snippet(binary_path));\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--export-context\" {\n        let mut context = ShellContext::new();\n        context.insert(\"CURRENT_DIR\".to_string(), env::current_dir()\n            .map(|p| p.to_string_lossy().to_string())\n            .unwrap_or_default());\n        let exports = starship::export_context(&context);\n        for (key, value) in exports {\n            println!(\"{}={}\", key, value);\n        }\n        return;\n    }\n\n    if args.len() > 1 && args[1] == \"--ai-config\" {\n        let endpoint = args.get(2).map(|s| s.as_str()).unwrap_or(\"https://api.openai.com/v1/chat/completions\");\n        let api_key = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n        let model = args.get(4).map(|s| s.as_str()).unwrap_or(\"gpt-3.5-turbo\");\n\n        let mut ai = AiIntegration::new();\n        ai.with_config(endpoint, api_key).with_model(model);\n\n        let context = ShellContext::new();\n        let history: Vec<String> = vec![];\n\n        match ai.suggest_command(&context, &history) {\n            Ok(suggestion) => {\n                println!(\"Command: {}\", suggestion.command);\n                if let Some(exp) = suggestion.explanation {\n                    println!(\"Explanation: {}\", exp);\n                }\n                println!(\"Confidence: {:.2}\", suggestion.confidence);\n            }\n            Err(e) => eprintln!(\"AI suggestion failed: {}\", e),\n        }\n        return;\n    }\n\n    println!(\"Shally Framework: Initializing core...\");\n\n    let config = base_config.clone();\n    println!(\"Configuration loaded for shell: {}\", config.shell_name);\n\n    let mut context = ShellContext::new();\n\n    if let Ok(_) = MockPlugin::initialize(&config) {\n        println!(\"✅ MockPlugin Initialized successfully.\");\n    } else {\n        eprintln!(\"❌ Initialization failed.\");\n        return;\n    }\n\n    match MockPlugin::pre_prompt_hook(&mut context) {\n        Ok(_) => println!(\"\\n✨ Pre-Prompt Hook executed. Context updated: {:?}\", context),\n        Err(e) => eprintln!(\"Error during pre-hook: {}\", e),\n    }\n\n    println!(\"\\nShally Framework Initialized successfully.\");\n}\n",
   "filePath": "/home/zubarev/sources/shelly/src/main.rs"
 }
 ```
@@ -2092,7 +2092,7 @@ Now let me build and run the tests to make sure everything works.
   Downloaded serde_yaml v0.9.34+deprecated
    Compiling unsafe-libyaml v0.2.11
    Compiling serde_yaml v0.9.34+deprecated
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
 warning: unused import: `std::collections::HashMap`
   --> src/config/mod.rs:61:9
    |
@@ -2101,9 +2101,9 @@ warning: unused import: `std::collections::HashMap`
    |
    = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
 
-warning: `shellai` (lib test) generated 1 warning (run `cargo fix --lib -p shellai --tests` to apply 1 suggestion)
+warning: `shally` (lib test) generated 1 warning (run `cargo fix --lib -p shally --tests` to apply 1 suggestion)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 4.79s
-     Running unittests src/lib.rs (target/debug/deps/shellai-8201d93a9d7c73ad)
+     Running unittests src/lib.rs (target/debug/deps/shally-8201d93a9d7c73ad)
 
 running 30 tests
 test ai::tests::test_ai_not_configured ... ok
@@ -2139,13 +2139,13 @@ test zsh::tests::test_zsh_preexec_hook ... ok
 
 test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running unittests src/main.rs (target/debug/deps/shellai-09bd51fb65895d18)
+     Running unittests src/main.rs (target/debug/deps/shally-09bd51fb65895d18)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-   Doc-tests shellai
+   Doc-tests shally
 
 running 0 tests
 
@@ -2201,8 +2201,8 @@ Now let me create an example YAML config and verify the build is clean.
 **Input:**
 ```json
 {
-  "content": "# ShellAI Framework Configuration\n# Place this file as shellai.yaml in current directory, home directory (~),\n# or specify path via --config flag or SHELLAI_CONFIG environment variable.\n\n# Target shell: zsh, fish, etc. (default: zsh)\nshell_name: zsh\n\n# Plugin settings key-value pairs\nsettings:\n  # AI endpoint URL\n  api_endpoint: \"https://api.openai.com/v1/chat/completions\"\n  # Request timeout in seconds\n  timeout: \"30\"\n  # Custom model name\n  model: \"gpt-3.5-turbo\"\n",
-  "filePath": "/home/zubarev/sources/shelly/shellai.yaml.example"
+  "content": "# Shally Framework Configuration\n# Place this file as shally.yaml in current directory, home directory (~),\n# or specify path via --config flag or SHELLAI_CONFIG environment variable.\n\n# Target shell: zsh, fish, etc. (default: zsh)\nshell_name: zsh\n\n# Plugin settings key-value pairs\nsettings:\n  # AI endpoint URL\n  api_endpoint: \"https://api.openai.com/v1/chat/completions\"\n  # Request timeout in seconds\n  timeout: \"30\"\n  # Custom model name\n  model: \"gpt-3.5-turbo\"\n",
+  "filePath": "/home/zubarev/sources/shelly/shally.yaml.example"
 }
 ```
 
@@ -2237,9 +2237,9 @@ Let me run the tests once more to confirm clean build and then test with the exa
 
 **Output:**
 ```
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.51s
-     Running unittests src/lib.rs (target/debug/deps/shellai-8201d93a9d7c73ad)
+     Running unittests src/lib.rs (target/debug/deps/shally-8201d93a9d7c73ad)
 
 running 30 tests
 test ai::tests::test_ai_not_configured ... ok
@@ -2275,19 +2275,19 @@ test zsh::tests::test_zsh_preexec_hook ... ok
 
 test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running unittests src/main.rs (target/debug/deps/shellai-09bd51fb65895d18)
+     Running unittests src/main.rs (target/debug/deps/shally-09bd51fb65895d18)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-   Doc-tests shellai
+   Doc-tests shally
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.42s
 
 ```
@@ -2310,7 +2310,7 @@ All tests pass and build is clean. Let me test the config loading with the examp
 **Input:**
 ```json
 {
-  "command": "cargo run -- --config /home/zubarev/sources/shelly/shellai.yaml.example 2>&1",
+  "command": "cargo run -- --config /home/zubarev/sources/shelly/shally.yaml.example 2>&1",
   "description": "Test config loading with example file"
 }
 ```
@@ -2318,15 +2318,15 @@ All tests pass and build is clean. Let me test the config loading with the examp
 **Output:**
 ```
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
-     Running `target/debug/shellai --config /home/zubarev/sources/shelly/shellai.yaml.example`
-Configuration loaded from: /home/zubarev/sources/shelly/shellai.yaml.example
-ShellAI Framework: Initializing core...
+     Running `target/debug/shally --config /home/zubarev/sources/shelly/shally.yaml.example`
+Configuration loaded from: /home/zubarev/sources/shelly/shally.yaml.example
+Shally Framework: Initializing core...
 Configuration loaded for shell: zsh
 ✅ MockPlugin Initialized successfully.
 
 ✨ Pre-Prompt Hook executed. Context updated: {"CURRENT_DIR": "test/path"}
 
-ShellAI Framework Initialized successfully.
+Shally Framework Initialized successfully.
 
 ```
 
@@ -2348,9 +2348,9 @@ Everything works perfectly. Let me summarize what was done.
 - `src/plugin/mod.rs` — `PluginConfig` теперь имеет `#[derive(Serialize, Deserialize)]`, дефолтные значения и `impl Default`
 - `src/config/mod.rs` — новый модуль с функциями:
   - `load_config(path)` — загрузка из файла или дефолты
-  - `resolve_config_path()` — поиск конфига: `--config` > `$SHELLAI_CONFIG` > `./shellai.yaml` > `~/.shellai.yaml`
+  - `resolve_config_path()` — поиск конфига: `--config` > `$SHELLAI_CONFIG` > `./shally.yaml` > `~/.shally.yaml`
 - `src/main.rs` — интеграция флага `--config`, автопоиск конфигурации при запуске
-- `shellai.yaml.example` — пример конфигурации
+- `shally.yaml.example` — пример конфигурации
 
 **Тесты:** 8 новых юнит-тестов для модуля config, все 30 тестов проходят.
 
@@ -2402,7 +2402,7 @@ Changes not staged for commit:
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
 	docs/session.md
-	shellai.yaml.example
+	shally.yaml.example
 	src/config/
 
 no changes added to commit (use "git add" and/or "git commit -a")
@@ -2443,7 +2443,7 @@ index 76365d6..8316c53 100644
 +]
 +
  [[package]]
- name = "shellai"
+ name = "shally"
  version = "0.1.0"
 @@ -835,6 +848,7 @@ dependencies = [
   "reqwest",
@@ -2495,11 +2495,11 @@ index f715b41..3a82970 100644
 +++ b/src/main.rs
 @@ -1,5 +1,5 @@
 -// src/main.rs
- use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
-+use shellai::config;
- use shellai::zsh;
- use shellai::fish;
- use shellai::starship;
+ use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
++use shally::config;
+ use shally::zsh;
+ use shally::fish;
+ use shally::starship;
 @@ -9,12 +9,34 @@ use std::env;
  fn main() {
      let args: Vec<String> = env::args().collect();
@@ -2548,7 +2548,7 @@ index f715b41..3a82970 100644
  
 @@ -107,10 +130,7 @@ fn main() {
  
-     println!("ShellAI Framework: Initializing core...");
+     println!("Shally Framework: Initializing core...");
  
 -    let config = PluginConfig {
 -        shell_name: "zsh".to_string(),
@@ -2561,7 +2561,7 @@ index f715b41..3a82970 100644
 @@ -128,4 +148,4 @@ fn main() {
      }
  
-     println!("\nShellAI Framework Initialized successfully.");
+     println!("\nShally Framework Initialized successfully.");
 -}
 \ No newline at end of file
 +}
@@ -2649,7 +2649,7 @@ Let me just proceed with the commit. I'll stage all the relevant files.
 **Input:**
 ```json
 {
-  "command": "git add src/config/mod.rs src/plugin/mod.rs src/lib.rs src/main.rs Cargo.toml shellai.yaml.example docs/session.md && git commit -m \"Add YAML configuration loading with serde_yaml\"",
+  "command": "git add src/config/mod.rs src/plugin/mod.rs src/lib.rs src/main.rs Cargo.toml shally.yaml.example docs/session.md && git commit -m \"Add YAML configuration loading with serde_yaml\"",
   "description": "Stage and commit config changes"
 }
 ```
@@ -2745,7 +2745,7 @@ The user has set their git identity. Now I can commit the changes.
 **Input:**
 ```json
 {
-  "command": "git add src/config/mod.rs src/plugin/mod.rs src/lib.rs src/main.rs Cargo.toml shellai.yaml.example docs/session.md && git commit -m \"Add YAML configuration loading with serde_yaml\"",
+  "command": "git add src/config/mod.rs src/plugin/mod.rs src/lib.rs src/main.rs Cargo.toml shally.yaml.example docs/session.md && git commit -m \"Add YAML configuration loading with serde_yaml\"",
   "description": "Stage and commit config changes"
 }
 ```
@@ -2814,7 +2814,7 @@ Good, now let me commit.
 **Input:**
 ```json
 {
-  "command": "git add src/config/mod.rs src/plugin/mod.rs src/lib.rs src/main.rs Cargo.toml shellai.yaml.example docs/session.md && git commit -m \"Add YAML configuration loading with serde_yaml\"",
+  "command": "git add src/config/mod.rs src/plugin/mod.rs src/lib.rs src/main.rs Cargo.toml shally.yaml.example docs/session.md && git commit -m \"Add YAML configuration loading with serde_yaml\"",
   "description": "Stage and commit config changes"
 }
 ```
@@ -2824,7 +2824,7 @@ Good, now let me commit.
 [main 8577518] Add YAML configuration loading with serde_yaml
  7 files changed, 246 insertions(+), 10 deletions(-)
  create mode 100644 docs/session.md
- create mode 100644 shellai.yaml.example
+ create mode 100644 shally.yaml.example
  create mode 100644 src/config/mod.rs
 
 ```
@@ -3431,7 +3431,7 @@ Let me also check what's in `src/lib.rs` to see the current module structure.
 2: use std::path::{Path, PathBuf};
 3: use crate::plugin::PluginConfig;
 4: 
-5: const DEFAULT_CONFIG_FILENAME: &str = "shellai.yaml";
+5: const DEFAULT_CONFIG_FILENAME: &str = "shally.yaml";
 6: 
 7: /// Attempts to load PluginConfig from a YAML file at the given path.
 8: /// Returns Default config if file doesn't exist or can't be parsed.
@@ -3477,7 +3477,7 @@ Let me also check what's in `src/lib.rs` to see the current module structure.
 48:     None
 49: }
 50: 
-51: /// Returns the path to ~/.shellai.yaml, or None if home dir can't be determined.
+51: /// Returns the path to ~/.shally.yaml, or None if home dir can't be determined.
 52: fn dirs_home() -> PathBuf {
 53:     std::env::var("HOME")
 54:         .map(|h| PathBuf::from(h).join(DEFAULT_CONFIG_FILENAME))
@@ -3552,7 +3552,7 @@ Let me also check what's in `src/lib.rs` to see the current module structure.
 123: 
 124:     #[test]
 125:     fn test_load_config_from_nonexistent_path() {
-126:         let path = Path::new("/tmp/shellai_nonexistent_test.yaml");
+126:         let path = Path::new("/tmp/shally_nonexistent_test.yaml");
 127:         let config = load_config(path);
 128:         assert_eq!(config.shell_name, "zsh");
 129:         assert!(config.settings.is_empty());
@@ -3578,7 +3578,7 @@ _Thinking:_
 
 Now I have a clear picture. I need to create a history module that:
 1. Stores command history entries with metadata (command, timestamp, exit code, AI suggestion)
-2. Persists to a file (~/.shellai_history.json or similar)
+2. Persists to a file (~/.shally_history.json or similar)
 3. Integrates with the AI agent - the AI can query relevant history for context-aware suggestions
 
 Let me create `src/history/mod.rs` and wire it up.
@@ -3612,7 +3612,7 @@ Now I'll create the history module with persistence and AI integration.
       "priority": "high"
     },
     {
-      "content": "Add history config to PluginConfig and shellai.yaml.example",
+      "content": "Add history config to PluginConfig and shally.yaml.example",
       "status": "pending",
       "priority": "medium"
     },
@@ -3644,7 +3644,7 @@ Now I'll create the history module with persistence and AI integration.
     "priority": "high"
   },
   {
-    "content": "Add history config to PluginConfig and shellai.yaml.example",
+    "content": "Add history config to PluginConfig and shally.yaml.example",
     "status": "pending",
     "priority": "medium"
   },
@@ -3668,7 +3668,7 @@ Let me think about the design:
 2. `HistoryManager` - manages the history: add, query, persist to file, load from file
 3. The AI integration will use history to build better prompts - it should be able to get recent commands and also search for similar commands
 
-For persistence, I'll use JSON file at `~/.shellai_history.json`.
+For persistence, I'll use JSON file at `~/.shally_history.json`.
 
 Let me also check what dependencies are available in Cargo.toml.
 
@@ -3692,7 +3692,7 @@ Let me also check what dependencies are available in Cargo.toml.
 <type>file</type>
 <content>
 1: [package]
-2: name = "shellai"
+2: name = "shally"
 3: version = "0.1.0"
 4: edition = "2021"
 5: 
@@ -3762,7 +3762,7 @@ Let me write the code.
 **Input:**
 ```json
 {
-  "content": "use std::collections::HashMap;\nuse std::fs;\nuse std::path::{Path, PathBuf};\nuse std::sync::RwLock;\nuse serde::{Deserialize, Serialize};\n\nconst DEFAULT_HISTORY_FILE: &str = \".shellai_history.json\";\nconst DEFAULT_MAX_ENTRIES: usize = 1000;\n\n#[derive(Debug, Clone, Serialize, Deserialize)]\npub struct HistoryEntry {\n    pub command: String,\n    pub timestamp: u64,\n    pub exit_code: i32,\n    pub ai_suggestion: Option<String>,\n    pub duration_ms: u64,\n}\n\nimpl HistoryEntry {\n    pub fn new(command: &str) -> Self {\n        Self {\n            command: command.to_string(),\n            timestamp: std::time::SystemTime::now()\n                .duration_since(std::time::UNIX_EPOCH)\n                .unwrap_or_default()\n                .as_secs(),\n            exit_code: -1,\n            ai_suggestion: None,\n            duration_ms: 0,\n        }\n    }\n\n    pub fn with_ai_suggestion(mut self, suggestion: &str) -> Self {\n        self.ai_suggestion = Some(suggestion.to_string());\n        self\n    }\n\n    pub fn mark_completed(&mut self, exit_code: i32, duration_ms: u64) {\n        self.exit_code = exit_code;\n        self.duration_ms = duration_ms;\n    }\n}\n\n#[derive(Debug, Clone, Serialize, Deserialize)]\nstruct HistoryStorage {\n    entries: Vec<HistoryEntry>,\n}\n\nimpl Default for HistoryStorage {\n    fn default() -> Self {\n        Self { entries: Vec::new() }\n    }\n}\n\npub struct HistoryManager {\n    storage: RwLock<HistoryStorage>,\n    history_path: PathBuf,\n    max_entries: usize,\n}\n\nimpl HistoryManager {\n    pub fn new(history_path: Option<&str>) -> Self {\n        let path = match history_path {\n            Some(p) => PathBuf::from(p),\n            None => Self::default_history_path(),\n        };\n        Self {\n            storage: RwLock::new(HistoryStorage::default()),\n            history_path: path,\n            max_entries: DEFAULT_MAX_ENTRIES,\n        }\n    }\n\n    pub fn with_max_entries(mut self, max: usize) -> Self {\n        self.max_entries = max;\n        self\n    }\n\n    fn default_history_path() -> PathBuf {\n        std::env::var(\"HOME\")\n            .map(|h| PathBuf::from(h).join(DEFAULT_HISTORY_FILE))\n            .unwrap_or_else(|_| PathBuf::from(DEFAULT_HISTORY_FILE))\n    }\n\n    pub fn load(&self) -> Result<usize, String> {\n        if !self.history_path.exists() {\n            return Ok(0);\n        }\n        let contents = fs::read_to_string(&self.history_path)\n            .map_err(|e| format!(\"Failed to read history file: {}\", e))?;\n        let storage: HistoryStorage = serde_json::from_str(&contents)\n            .map_err(|e| format!(\"Failed to parse history file: {}\", e))?;\n        let mut guard = self.storage.write().map_err(|e| format!(\"Lock error: {}\", e))?;\n        guard.entries = storage.entries;\n        Ok(guard.entries.len())\n    }\n\n    pub fn save(&self) -> Result<(), String> {\n        let guard = self.storage.read().map_err(|e| format!(\"Lock error: {}\", e))?;\n        let json = serde_json::to_string_pretty(&*guard)\n            .map_err(|e| format!(\"Failed to serialize history: {}\", e))?;\n        fs::write(&self.history_path, json)\n            .map_err(|e| format!(\"Failed to write history file: {}\", e))?;\n        Ok(())\n    }\n\n    pub fn add_entry(&self, entry: HistoryEntry) -> Result<(), String> {\n        let mut guard = self.storage.write().map_err(|e| format!(\"Lock error: {}\", e))?;\n        guard.entries.push(entry);\n        if guard.entries.len() > self.max_entries {\n            let remove_count = guard.entries.len() - self.max_entries;\n            guard.entries.drain(0..remove_count);\n        }\n        Ok(())\n    }\n\n    pub fn get_recent(&self, count: usize) -> Vec<HistoryEntry> {\n        let guard = match self.storage.read() {\n            Ok(g) => g,\n            Err(_) => return Vec::new(),\n        };\n        let start = if guard.entries.len() > count {\n            guard.entries.len() - count\n        } else {\n            0\n        };\n        guard.entries[start..].to_vec()\n    }\n\n    pub fn search(&self, query: &str) -> Vec<HistoryEntry> {\n        let guard = match self.storage.read() {\n            Ok(g) => g,\n            Err(_) => return Vec::new(),\n        };\n        let lower = query.to_lowercase();\n        guard.entries.iter()\n            .filter(|e| e.command.to_lowercase().contains(&lower))\n            .cloned()\n            .collect()\n    }\n\n    pub fn get_relevant_for_ai(&self, context: &HashMap<String, String>, limit: usize) -> Vec<HistoryEntry> {\n        let guard = match self.storage.read() {\n            Ok(g) => g,\n            Err(_) => return Vec::new(),\n        };\n\n        let mut scored: Vec<(f64, HistoryEntry)> = guard.entries.iter().cloned().filter_map(|entry| {\n            let mut score = 0.0;\n\n            for (key, value) in context {\n                if entry.command.contains(&key) {\n                    score += 1.0;\n                }\n                if entry.command.contains(value) {\n                    score += 1.5;\n                }\n            }\n\n            if entry.exit_code == 0 {\n                score += 0.5;\n            }\n\n            let recent_bonus = Self::recency_score(entry.timestamp);\n            score += recent_bonus;\n\n            if score > 0.0 {\n                Some((score, entry))\n            } else {\n                None\n            }\n        }).collect();\n\n        scored.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));\n        scored.into_iter().map(|(_, entry)| entry).take(limit).collect()\n    }\n\n    fn recency_score(timestamp: u64) -> f64 {\n        let now = std::time::SystemTime::now()\n            .duration_since(std::time::UNIX_EPOCH)\n            .unwrap_or_default()\n            .as_secs();\n        let age_seconds = now.saturating_sub(timestamp);\n        let hour = 3600u64;\n        match age_seconds {\n            0..hour => 2.0,\n            hour..(hour * 24) => 1.0,\n            (hour * 24)..(hour * 24 * 7) => 0.5,\n            _ => 0.1,\n        }\n    }\n\n    pub fn clear(&self) -> Result<(), String> {\n        let mut guard = self.storage.write().map_err(|e| format!(\"Lock error: {}\", e))?;\n        guard.entries.clear();\n        self.save()\n    }\n\n    pub fn len(&self) -> usize {\n        match self.storage.read() {\n            Ok(g) => g.entries.len(),\n            Err(_) => 0,\n        }\n    }\n\n    pub fn is_empty(&self) -> bool {\n        self.len() == 0\n    }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn test_history_entry_creation() {\n        let entry = HistoryEntry::new(\"ls -la\");\n        assert_eq!(entry.command, \"ls -la\");\n        assert_eq!(entry.exit_code, -1);\n        assert!(entry.ai_suggestion.is_none());\n    }\n\n    #[test]\n    fn test_history_entry_with_ai() {\n        let entry = HistoryEntry::new(\"ls -la\").with_ai_suggestion(\"ls -lah\");\n        assert_eq!(entry.ai_suggestion, Some(\"ls -lah\".to_string()));\n    }\n\n    #[test]\n    fn test_mark_completed() {\n        let mut entry = HistoryEntry::new(\"ls -la\");\n        entry.mark_completed(0, 150);\n        assert_eq!(entry.exit_code, 0);\n        assert_eq!(entry.duration_ms, 150);\n    }\n\n    #[test]\n    fn test_add_and_get_recent() {\n        let tmp = std::env::temp_dir().join(\"shellai_test_history.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"cmd1\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"cmd2\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"cmd3\")).unwrap();\n\n        let recent = hm.get_recent(2);\n        assert_eq!(recent.len(), 2);\n        assert_eq!(recent[0].command, \"cmd2\");\n        assert_eq!(recent[1].command, \"cmd3\");\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_search() {\n        let tmp = std::env::temp_dir().join(\"shellai_test_history2.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"git status\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"ls -la\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"git log\")).unwrap();\n\n        let results = hm.search(\"git\");\n        assert_eq!(results.len(), 2);\n        assert!(results.iter().all(|e| e.command.contains(\"git\")));\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_save_and_load() {\n        let tmp = std::env::temp_dir().join(\"shellai_test_history3.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"echo hello\")).unwrap();\n        hm.save().unwrap();\n\n        let hm2 = HistoryManager::new(Some(tmp.to_str().unwrap()));\n        let loaded = hm2.load().unwrap();\n        assert_eq!(loaded, 1);\n        assert_eq!(hm2.get_recent(1)[0].command, \"echo hello\");\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_max_entries_enforced() {\n        let tmp = std::env::temp_dir().join(\"shellai_test_history4.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap())).with_max_entries(3);\n\n        for i in 0..5 {\n            hm.add_entry(HistoryEntry::new(&format!(\"cmd{}\", i))).unwrap();\n        }\n\n        assert_eq!(hm.len(), 3);\n        let entries = hm.get_recent(3);\n        assert_eq!(entries[0].command, \"cmd2\");\n        assert_eq!(entries[2].command, \"cmd4\");\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_clear() {\n        let tmp = std::env::temp_dir().join(\"shellai_test_history5.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"cmd1\")).unwrap();\n        hm.clear().unwrap();\n        assert!(hm.is_empty());\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_relevant_for_ai() {\n        let tmp = std::env::temp_dir().join(\"shellai_test_history6.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"git status\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"ls -la\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"cd /home\")).unwrap();\n\n        let mut ctx = HashMap::new();\n        ctx.insert(\"PWD\".to_string(), \"/home\".to_string());\n        ctx.insert(\"GIT_BRANCH\".to_string(), \"main\".to_string());\n\n        let relevant = hm.get_relevant_for_ai(&ctx, 2);\n        assert!(!relevant.is_empty());\n        assert!(relevant.len() <= 2);\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_load_nonexistent_file() {\n        let tmp = std::env::temp_dir().join(\"shellai_test_noexist.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n        let count = hm.load().unwrap();\n        assert_eq!(count, 0);\n    }\n\n    #[test]\n    fn test_recency_score() {\n        let now = std::time::SystemTime::now()\n            .duration_since(std::time::UNIX_EPOCH)\n            .unwrap()\n            .as_secs();\n        assert_eq!(HistoryManager::recency_score(now), 2.0);\n        assert_eq!(HistoryManager::recency_score(now - 1800), 2.0);\n        assert_eq!(HistoryManager::recency_score(now - 40000), 1.0);\n        assert_eq!(HistoryManager::recency_score(now - 86400 * 3), 0.5);\n        assert_eq!(HistoryManager::recency_score(0), 0.1);\n    }\n}\n",
+  "content": "use std::collections::HashMap;\nuse std::fs;\nuse std::path::{Path, PathBuf};\nuse std::sync::RwLock;\nuse serde::{Deserialize, Serialize};\n\nconst DEFAULT_HISTORY_FILE: &str = \".shally_history.json\";\nconst DEFAULT_MAX_ENTRIES: usize = 1000;\n\n#[derive(Debug, Clone, Serialize, Deserialize)]\npub struct HistoryEntry {\n    pub command: String,\n    pub timestamp: u64,\n    pub exit_code: i32,\n    pub ai_suggestion: Option<String>,\n    pub duration_ms: u64,\n}\n\nimpl HistoryEntry {\n    pub fn new(command: &str) -> Self {\n        Self {\n            command: command.to_string(),\n            timestamp: std::time::SystemTime::now()\n                .duration_since(std::time::UNIX_EPOCH)\n                .unwrap_or_default()\n                .as_secs(),\n            exit_code: -1,\n            ai_suggestion: None,\n            duration_ms: 0,\n        }\n    }\n\n    pub fn with_ai_suggestion(mut self, suggestion: &str) -> Self {\n        self.ai_suggestion = Some(suggestion.to_string());\n        self\n    }\n\n    pub fn mark_completed(&mut self, exit_code: i32, duration_ms: u64) {\n        self.exit_code = exit_code;\n        self.duration_ms = duration_ms;\n    }\n}\n\n#[derive(Debug, Clone, Serialize, Deserialize)]\nstruct HistoryStorage {\n    entries: Vec<HistoryEntry>,\n}\n\nimpl Default for HistoryStorage {\n    fn default() -> Self {\n        Self { entries: Vec::new() }\n    }\n}\n\npub struct HistoryManager {\n    storage: RwLock<HistoryStorage>,\n    history_path: PathBuf,\n    max_entries: usize,\n}\n\nimpl HistoryManager {\n    pub fn new(history_path: Option<&str>) -> Self {\n        let path = match history_path {\n            Some(p) => PathBuf::from(p),\n            None => Self::default_history_path(),\n        };\n        Self {\n            storage: RwLock::new(HistoryStorage::default()),\n            history_path: path,\n            max_entries: DEFAULT_MAX_ENTRIES,\n        }\n    }\n\n    pub fn with_max_entries(mut self, max: usize) -> Self {\n        self.max_entries = max;\n        self\n    }\n\n    fn default_history_path() -> PathBuf {\n        std::env::var(\"HOME\")\n            .map(|h| PathBuf::from(h).join(DEFAULT_HISTORY_FILE))\n            .unwrap_or_else(|_| PathBuf::from(DEFAULT_HISTORY_FILE))\n    }\n\n    pub fn load(&self) -> Result<usize, String> {\n        if !self.history_path.exists() {\n            return Ok(0);\n        }\n        let contents = fs::read_to_string(&self.history_path)\n            .map_err(|e| format!(\"Failed to read history file: {}\", e))?;\n        let storage: HistoryStorage = serde_json::from_str(&contents)\n            .map_err(|e| format!(\"Failed to parse history file: {}\", e))?;\n        let mut guard = self.storage.write().map_err(|e| format!(\"Lock error: {}\", e))?;\n        guard.entries = storage.entries;\n        Ok(guard.entries.len())\n    }\n\n    pub fn save(&self) -> Result<(), String> {\n        let guard = self.storage.read().map_err(|e| format!(\"Lock error: {}\", e))?;\n        let json = serde_json::to_string_pretty(&*guard)\n            .map_err(|e| format!(\"Failed to serialize history: {}\", e))?;\n        fs::write(&self.history_path, json)\n            .map_err(|e| format!(\"Failed to write history file: {}\", e))?;\n        Ok(())\n    }\n\n    pub fn add_entry(&self, entry: HistoryEntry) -> Result<(), String> {\n        let mut guard = self.storage.write().map_err(|e| format!(\"Lock error: {}\", e))?;\n        guard.entries.push(entry);\n        if guard.entries.len() > self.max_entries {\n            let remove_count = guard.entries.len() - self.max_entries;\n            guard.entries.drain(0..remove_count);\n        }\n        Ok(())\n    }\n\n    pub fn get_recent(&self, count: usize) -> Vec<HistoryEntry> {\n        let guard = match self.storage.read() {\n            Ok(g) => g,\n            Err(_) => return Vec::new(),\n        };\n        let start = if guard.entries.len() > count {\n            guard.entries.len() - count\n        } else {\n            0\n        };\n        guard.entries[start..].to_vec()\n    }\n\n    pub fn search(&self, query: &str) -> Vec<HistoryEntry> {\n        let guard = match self.storage.read() {\n            Ok(g) => g,\n            Err(_) => return Vec::new(),\n        };\n        let lower = query.to_lowercase();\n        guard.entries.iter()\n            .filter(|e| e.command.to_lowercase().contains(&lower))\n            .cloned()\n            .collect()\n    }\n\n    pub fn get_relevant_for_ai(&self, context: &HashMap<String, String>, limit: usize) -> Vec<HistoryEntry> {\n        let guard = match self.storage.read() {\n            Ok(g) => g,\n            Err(_) => return Vec::new(),\n        };\n\n        let mut scored: Vec<(f64, HistoryEntry)> = guard.entries.iter().cloned().filter_map(|entry| {\n            let mut score = 0.0;\n\n            for (key, value) in context {\n                if entry.command.contains(&key) {\n                    score += 1.0;\n                }\n                if entry.command.contains(value) {\n                    score += 1.5;\n                }\n            }\n\n            if entry.exit_code == 0 {\n                score += 0.5;\n            }\n\n            let recent_bonus = Self::recency_score(entry.timestamp);\n            score += recent_bonus;\n\n            if score > 0.0 {\n                Some((score, entry))\n            } else {\n                None\n            }\n        }).collect();\n\n        scored.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));\n        scored.into_iter().map(|(_, entry)| entry).take(limit).collect()\n    }\n\n    fn recency_score(timestamp: u64) -> f64 {\n        let now = std::time::SystemTime::now()\n            .duration_since(std::time::UNIX_EPOCH)\n            .unwrap_or_default()\n            .as_secs();\n        let age_seconds = now.saturating_sub(timestamp);\n        let hour = 3600u64;\n        match age_seconds {\n            0..hour => 2.0,\n            hour..(hour * 24) => 1.0,\n            (hour * 24)..(hour * 24 * 7) => 0.5,\n            _ => 0.1,\n        }\n    }\n\n    pub fn clear(&self) -> Result<(), String> {\n        let mut guard = self.storage.write().map_err(|e| format!(\"Lock error: {}\", e))?;\n        guard.entries.clear();\n        self.save()\n    }\n\n    pub fn len(&self) -> usize {\n        match self.storage.read() {\n            Ok(g) => g.entries.len(),\n            Err(_) => 0,\n        }\n    }\n\n    pub fn is_empty(&self) -> bool {\n        self.len() == 0\n    }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn test_history_entry_creation() {\n        let entry = HistoryEntry::new(\"ls -la\");\n        assert_eq!(entry.command, \"ls -la\");\n        assert_eq!(entry.exit_code, -1);\n        assert!(entry.ai_suggestion.is_none());\n    }\n\n    #[test]\n    fn test_history_entry_with_ai() {\n        let entry = HistoryEntry::new(\"ls -la\").with_ai_suggestion(\"ls -lah\");\n        assert_eq!(entry.ai_suggestion, Some(\"ls -lah\".to_string()));\n    }\n\n    #[test]\n    fn test_mark_completed() {\n        let mut entry = HistoryEntry::new(\"ls -la\");\n        entry.mark_completed(0, 150);\n        assert_eq!(entry.exit_code, 0);\n        assert_eq!(entry.duration_ms, 150);\n    }\n\n    #[test]\n    fn test_add_and_get_recent() {\n        let tmp = std::env::temp_dir().join(\"shally_test_history.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"cmd1\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"cmd2\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"cmd3\")).unwrap();\n\n        let recent = hm.get_recent(2);\n        assert_eq!(recent.len(), 2);\n        assert_eq!(recent[0].command, \"cmd2\");\n        assert_eq!(recent[1].command, \"cmd3\");\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_search() {\n        let tmp = std::env::temp_dir().join(\"shally_test_history2.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"git status\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"ls -la\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"git log\")).unwrap();\n\n        let results = hm.search(\"git\");\n        assert_eq!(results.len(), 2);\n        assert!(results.iter().all(|e| e.command.contains(\"git\")));\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_save_and_load() {\n        let tmp = std::env::temp_dir().join(\"shally_test_history3.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"echo hello\")).unwrap();\n        hm.save().unwrap();\n\n        let hm2 = HistoryManager::new(Some(tmp.to_str().unwrap()));\n        let loaded = hm2.load().unwrap();\n        assert_eq!(loaded, 1);\n        assert_eq!(hm2.get_recent(1)[0].command, \"echo hello\");\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_max_entries_enforced() {\n        let tmp = std::env::temp_dir().join(\"shally_test_history4.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap())).with_max_entries(3);\n\n        for i in 0..5 {\n            hm.add_entry(HistoryEntry::new(&format!(\"cmd{}\", i))).unwrap();\n        }\n\n        assert_eq!(hm.len(), 3);\n        let entries = hm.get_recent(3);\n        assert_eq!(entries[0].command, \"cmd2\");\n        assert_eq!(entries[2].command, \"cmd4\");\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_clear() {\n        let tmp = std::env::temp_dir().join(\"shally_test_history5.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"cmd1\")).unwrap();\n        hm.clear().unwrap();\n        assert!(hm.is_empty());\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_relevant_for_ai() {\n        let tmp = std::env::temp_dir().join(\"shally_test_history6.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n\n        hm.add_entry(HistoryEntry::new(\"git status\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"ls -la\")).unwrap();\n        hm.add_entry(HistoryEntry::new(\"cd /home\")).unwrap();\n\n        let mut ctx = HashMap::new();\n        ctx.insert(\"PWD\".to_string(), \"/home\".to_string());\n        ctx.insert(\"GIT_BRANCH\".to_string(), \"main\".to_string());\n\n        let relevant = hm.get_relevant_for_ai(&ctx, 2);\n        assert!(!relevant.is_empty());\n        assert!(relevant.len() <= 2);\n\n        let _ = fs::remove_file(&tmp);\n    }\n\n    #[test]\n    fn test_load_nonexistent_file() {\n        let tmp = std::env::temp_dir().join(\"shally_test_noexist.json\");\n        let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));\n        let count = hm.load().unwrap();\n        assert_eq!(count, 0);\n    }\n\n    #[test]\n    fn test_recency_score() {\n        let now = std::time::SystemTime::now()\n            .duration_since(std::time::UNIX_EPOCH)\n            .unwrap()\n            .as_secs();\n        assert_eq!(HistoryManager::recency_score(now), 2.0);\n        assert_eq!(HistoryManager::recency_score(now - 1800), 2.0);\n        assert_eq!(HistoryManager::recency_score(now - 40000), 1.0);\n        assert_eq!(HistoryManager::recency_score(now - 86400 * 3), 0.5);\n        assert_eq!(HistoryManager::recency_score(0), 0.1);\n    }\n}\n",
   "filePath": "/home/zubarev/sources/shelly/src/history/mod.rs"
 }
 ```
@@ -3807,7 +3807,7 @@ Good, now let me wire it up in lib.rs and main.rs, then integrate with the AI mo
       "priority": "high"
     },
     {
-      "content": "Add history config to PluginConfig and shellai.yaml.example",
+      "content": "Add history config to PluginConfig and shally.yaml.example",
       "status": "pending",
       "priority": "medium"
     },
@@ -3839,7 +3839,7 @@ Good, now let me wire it up in lib.rs and main.rs, then integrate with the AI mo
     "priority": "high"
   },
   {
-    "content": "Add history config to PluginConfig and shellai.yaml.example",
+    "content": "Add history config to PluginConfig and shally.yaml.example",
     "status": "pending",
     "priority": "medium"
   },
@@ -3981,8 +3981,8 @@ Good, now let me update main.rs to use the history manager.
 ```json
 {
   "filePath": "/home/zubarev/sources/shelly/src/main.rs",
-  "oldString": "use shellai::config::{load_config, resolve_config_path};\nuse shellai::plugin::mock_plugin::MockPlugin;\nuse shellai::plugin::{ShellPlugin, PluginConfig};\n\nfn main() {\n    let config_path = resolve_config_path(None);\n    let config = match config_path {\n        Some(path) => load_config(&path),\n        None => PluginConfig::default(),\n    };\n\n    println!(\"Loaded config for shell: {}\", config.shell_name);\n\n    if let Err(e) = run_plugins(&config) {\n        eprintln!(\"Plugin error: {}\", e);\n        std::process::exit(1);\n    }\n}\n\nfn run_plugins(config: &PluginConfig) -> Result<(), String> {\n    // Initialize mock plugin\n    MockPlugin::initialize(config)?;\n\n    let mut context = shellai::plugin::ShellContext::new();\n    MockPlugin::pre_prompt_hook(&mut context)?;\n\n    println!(\"Context after pre-prompt hook:\");\n    for (key, value) in &context {\n        println!(\"  {} = {}\", key, value);\n    }\n\n    // Simulate command execution\n    let test_command = \"ls -la\";\n    MockPlugin::post_execute_hook(test_command, 0)?;\n\n    Ok(())\n}",
-  "newString": "use shellai::config::{load_config, resolve_config_path};\nuse shellai::plugin::mock_plugin::MockPlugin;\nuse shellai::plugin::{ShellPlugin, PluginConfig};\nuse shellai::history::{HistoryManager, HistoryEntry};\n\nfn main() {\n    let config_path = resolve_config_path(None);\n    let config = match config_path {\n        Some(path) => load_config(&path),\n        None => PluginConfig::default(),\n    };\n\n    println!(\"Loaded config for shell: {}\", config.shell_name);\n\n    // Initialize history manager\n    let history_path = config.settings.get(\"history_file\").map(|s| s.as_str());\n    let max_entries = config.settings.get(\"max_history\")\n        .and_then(|s| s.parse::<usize>().ok())\n        .unwrap_or(1000);\n\n    let history = HistoryManager::new(history_path).with_max_entries(max_entries);\n\n    // Load persisted history\n    if let Ok(count) = history.load() {\n        println!(\"Loaded {} history entries\", count);\n    }\n\n    if let Err(e) = run_plugins(&config, &history) {\n        eprintln!(\"Plugin error: {}\", e);\n        std::process::exit(1);\n    }\n\n    // Save history on exit\n    if let Err(e) = history.save() {\n        eprintln!(\"Failed to save history: {}\", e);\n    }\n}\n\nfn run_plugins(config: &PluginConfig, history: &HistoryManager) -> Result<(), String> {\n    // Initialize mock plugin\n    MockPlugin::initialize(config)?;\n\n    let mut context = shellai::plugin::ShellContext::new();\n    MockPlugin::pre_prompt_hook(&mut context)?;\n\n    println!(\"Context after pre-prompt hook:\");\n    for (key, value) in &context {\n        println!(\"  {} = {}\", key, value);\n    }\n\n    // Simulate command execution with history tracking\n    let test_command = \"ls -la\";\n    let entry = HistoryEntry::new(test_command);\n    history.add_entry(entry)?;\n\n    MockPlugin::post_execute_hook(test_command, 0)?;\n\n    Ok(())\n}"
+  "oldString": "use shally::config::{load_config, resolve_config_path};\nuse shally::plugin::mock_plugin::MockPlugin;\nuse shally::plugin::{ShellPlugin, PluginConfig};\n\nfn main() {\n    let config_path = resolve_config_path(None);\n    let config = match config_path {\n        Some(path) => load_config(&path),\n        None => PluginConfig::default(),\n    };\n\n    println!(\"Loaded config for shell: {}\", config.shell_name);\n\n    if let Err(e) = run_plugins(&config) {\n        eprintln!(\"Plugin error: {}\", e);\n        std::process::exit(1);\n    }\n}\n\nfn run_plugins(config: &PluginConfig) -> Result<(), String> {\n    // Initialize mock plugin\n    MockPlugin::initialize(config)?;\n\n    let mut context = shally::plugin::ShellContext::new();\n    MockPlugin::pre_prompt_hook(&mut context)?;\n\n    println!(\"Context after pre-prompt hook:\");\n    for (key, value) in &context {\n        println!(\"  {} = {}\", key, value);\n    }\n\n    // Simulate command execution\n    let test_command = \"ls -la\";\n    MockPlugin::post_execute_hook(test_command, 0)?;\n\n    Ok(())\n}",
+  "newString": "use shally::config::{load_config, resolve_config_path};\nuse shally::plugin::mock_plugin::MockPlugin;\nuse shally::plugin::{ShellPlugin, PluginConfig};\nuse shally::history::{HistoryManager, HistoryEntry};\n\nfn main() {\n    let config_path = resolve_config_path(None);\n    let config = match config_path {\n        Some(path) => load_config(&path),\n        None => PluginConfig::default(),\n    };\n\n    println!(\"Loaded config for shell: {}\", config.shell_name);\n\n    // Initialize history manager\n    let history_path = config.settings.get(\"history_file\").map(|s| s.as_str());\n    let max_entries = config.settings.get(\"max_history\")\n        .and_then(|s| s.parse::<usize>().ok())\n        .unwrap_or(1000);\n\n    let history = HistoryManager::new(history_path).with_max_entries(max_entries);\n\n    // Load persisted history\n    if let Ok(count) = history.load() {\n        println!(\"Loaded {} history entries\", count);\n    }\n\n    if let Err(e) = run_plugins(&config, &history) {\n        eprintln!(\"Plugin error: {}\", e);\n        std::process::exit(1);\n    }\n\n    // Save history on exit\n    if let Err(e) = history.save() {\n        eprintln!(\"Failed to save history: {}\", e);\n    }\n}\n\nfn run_plugins(config: &PluginConfig, history: &HistoryManager) -> Result<(), String> {\n    // Initialize mock plugin\n    MockPlugin::initialize(config)?;\n\n    let mut context = shally::plugin::ShellContext::new();\n    MockPlugin::pre_prompt_hook(&mut context)?;\n\n    println!(\"Context after pre-prompt hook:\");\n    for (key, value) in &context {\n        println!(\"  {} = {}\", key, value);\n    }\n\n    // Simulate command execution with history tracking\n    let test_command = \"ls -la\";\n    let entry = HistoryEntry::new(test_command);\n    history.add_entry(entry)?;\n\n    MockPlugin::post_execute_hook(test_command, 0)?;\n\n    Ok(())\n}"
 }
 ```
 
@@ -4018,12 +4018,12 @@ The main.rs file seems to have different content than what I read earlier. Let m
 <path>/home/zubarev/sources/shelly/src/main.rs</path>
 <type>file</type>
 <content>
-1: use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
-2: use shellai::config;
-3: use shellai::zsh;
-4: use shellai::fish;
-5: use shellai::starship;
-6: use shellai::ai::AiIntegration;
+1: use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
+2: use shally::config;
+3: use shally::zsh;
+4: use shally::fish;
+5: use shally::starship;
+6: use shally::ai::AiIntegration;
 7: use std::env;
 8: 
 9: fn main() {
@@ -4101,13 +4101,13 @@ The main.rs file seems to have different content than what I read earlier. Let m
 81:     }
 82: 
 83:     if args.len() > 1 && args[1] == "--install" {
-84:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+84:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 85:         println!("{}", zsh::generate_zshrc_snippet(binary_path));
 86:         return;
 87:     }
 88: 
 89:     if args.len() > 1 && args[1] == "--fish-install" {
-90:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+90:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 91:         println!("{}", fish::generate_config_snippet(binary_path));
 92:         return;
 93:     }
@@ -4148,7 +4148,7 @@ The main.rs file seems to have different content than what I read earlier. Let m
 128:         return;
 129:     }
 130: 
-131:     println!("ShellAI Framework: Initializing core...");
+131:     println!("Shally Framework: Initializing core...");
 132: 
 133:     let config = base_config.clone();
 134:     println!("Configuration loaded for shell: {}", config.shell_name);
@@ -4167,7 +4167,7 @@ The main.rs file seems to have different content than what I read earlier. Let m
 147:         Err(e) => eprintln!("Error during pre-hook: {}", e),
 148:     }
 149: 
-150:     println!("\nShellAI Framework Initialized successfully.");
+150:     println!("\nShally Framework Initialized successfully.");
 151: }
 
 (End of file - total 151 lines)
@@ -4193,8 +4193,8 @@ Now I see the actual content. Let me integrate history into main.rs and then upd
 ```json
 {
   "filePath": "/home/zubarev/sources/shelly/src/main.rs",
-  "oldString": "use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};\nuse shellai::config;\nuse shellai::zsh;\nuse shellai::fish;\nuse shellai::starship;\nuse shellai::ai::AiIntegration;\nuse std::env;",
-  "newString": "use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};\nuse shellai::config;\nuse shellai::zsh;\nuse shellai::fish;\nuse shellai::starship;\nuse shellai::ai::AiIntegration;\nuse shellai::history::{HistoryManager, HistoryEntry};\nuse std::env;"
+  "oldString": "use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};\nuse shally::config;\nuse shally::zsh;\nuse shally::fish;\nuse shally::starship;\nuse shally::ai::AiIntegration;\nuse std::env;",
+  "newString": "use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};\nuse shally::config;\nuse shally::zsh;\nuse shally::fish;\nuse shally::starship;\nuse shally::ai::AiIntegration;\nuse shally::history::{HistoryManager, HistoryEntry};\nuse std::env;"
 }
 ```
 
@@ -4223,7 +4223,7 @@ Good, now let me update the AI config section to use history manager and also ad
 {
   "filePath": "/home/zubarev/sources/shelly/src/main.rs",
   "oldString": "    if args.len() > 1 && args[1] == \"--ai-config\" {\n        let endpoint = args.get(2).map(|s| s.as_str()).unwrap_or(\"https://api.openai.com/v1/chat/completions\");\n        let api_key = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n        let model = args.get(4).map(|s| s.as_str()).unwrap_or(\"gpt-3.5-turbo\");\n\n        let mut ai = AiIntegration::new();\n        ai.with_config(endpoint, api_key).with_model(model);\n\n        let context = ShellContext::new();\n        let history: Vec<String> = vec![];\n\n        match ai.suggest_command(&context, &history) {\n            Ok(suggestion) => {\n                println!(\"Command: {}\", suggestion.command);\n                if let Some(exp) = suggestion.explanation {\n                    println!(\"Explanation: {}\", exp);\n                }\n                println!(\"Confidence: {:.2}\", suggestion.confidence);\n            }\n            Err(e) => eprintln!(\"AI suggestion failed: {}\", e),\n        }\n        return;\n    }",
-  "newString": "    if args.len() > 1 && args[1] == \"--ai-config\" {\n        let endpoint = args.get(2).map(|s| s.as_str()).unwrap_or(\"https://api.openai.com/v1/chat/completions\");\n        let api_key = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n        let model = args.get(4).map(|s| s.as_str()).unwrap_or(\"gpt-3.5-turbo\");\n\n        let mut ai = AiIntegration::new();\n        ai.with_config(endpoint, api_key).with_model(model);\n\n        let context = ShellContext::new();\n\n        // Load history for AI context\n        let history_path = base_config.settings.get(\"history_file\").map(|s| s.as_str());\n        let max_entries = base_config.settings.get(\"max_history\")\n            .and_then(|s| s.parse::<usize>().ok())\n            .unwrap_or(1000);\n        let history_mgr = HistoryManager::new(history_path).with_max_entries(max_entries);\n        if let Err(e) = history_mgr.load() {\n            eprintln!(\"Warning: Could not load history: {}\", e);\n        }\n\n        let ai_history = history_mgr.get_relevant_for_ai(&context, 10);\n\n        match ai.suggest_command(&context, &ai_history) {\n            Ok(suggestion) => {\n                println!(\"Command: {}\", suggestion.command);\n                if let Some(exp) = suggestion.explanation {\n                    println!(\"Explanation: {}\", exp);\n                }\n                println!(\"Confidence: {:.2}\", suggestion.confidence);\n                if let Some(ref ai_cmd) = suggestion.ai_command {\n                    println!(\"AI Command: {}\", ai_cmd);\n                }\n            }\n            Err(e) => eprintln!(\"AI suggestion failed: {}\", e),\n        }\n        return;\n    }\n\n    if args.len() > 2 && args[1] == \"--history\" {\n        let history_path = base_config.settings.get(\"history_file\").map(|s| s.as_str());\n        let max_entries = base_config.settings.get(\"max_history\")\n            .and_then(|s| s.parse::<usize>().ok())\n            .unwrap_or(1000);\n        let history_mgr = HistoryManager::new(history_path).with_max_entries(max_entries);\n\n        match args[2].as_str() {\n            \"recent\" => {\n                let count = args.get(3).and_then(|s| s.parse::<usize>().ok()).unwrap_or(10);\n                if history_mgr.load().is_ok() {\n                    for entry in history_mgr.get_recent(count) {\n                        println!(\"[{}] exit={} {}ms{}\",\n                            entry.command,\n                            entry.exit_code,\n                            entry.duration_ms,\n                            entry.ai_suggestion.as_ref().map(|s| format!(\" (AI: {})\", s)).unwrap_or_default()\n                        );\n                    }\n                }\n            }\n            \"search\" => {\n                let query = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n                if history_mgr.load().is_ok() {\n                    for entry in history_mgr.search(query) {\n                        println!(\"[{}] exit={} {}ms\", entry.command, entry.exit_code, entry.duration_ms);\n                    }\n                }\n            }\n            \"clear\" => {\n                if let Err(e) = history_mgr.clear() {\n                    eprintln!(\"Failed to clear history: {}\", e);\n                } else {\n                    println!(\"History cleared.\");\n                }\n            }\n            _ => {\n                eprintln!(\"Usage: shellai --history [recent|search|clear]\");\n            }\n        }\n        return;\n    }"
+  "newString": "    if args.len() > 1 && args[1] == \"--ai-config\" {\n        let endpoint = args.get(2).map(|s| s.as_str()).unwrap_or(\"https://api.openai.com/v1/chat/completions\");\n        let api_key = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n        let model = args.get(4).map(|s| s.as_str()).unwrap_or(\"gpt-3.5-turbo\");\n\n        let mut ai = AiIntegration::new();\n        ai.with_config(endpoint, api_key).with_model(model);\n\n        let context = ShellContext::new();\n\n        // Load history for AI context\n        let history_path = base_config.settings.get(\"history_file\").map(|s| s.as_str());\n        let max_entries = base_config.settings.get(\"max_history\")\n            .and_then(|s| s.parse::<usize>().ok())\n            .unwrap_or(1000);\n        let history_mgr = HistoryManager::new(history_path).with_max_entries(max_entries);\n        if let Err(e) = history_mgr.load() {\n            eprintln!(\"Warning: Could not load history: {}\", e);\n        }\n\n        let ai_history = history_mgr.get_relevant_for_ai(&context, 10);\n\n        match ai.suggest_command(&context, &ai_history) {\n            Ok(suggestion) => {\n                println!(\"Command: {}\", suggestion.command);\n                if let Some(exp) = suggestion.explanation {\n                    println!(\"Explanation: {}\", exp);\n                }\n                println!(\"Confidence: {:.2}\", suggestion.confidence);\n                if let Some(ref ai_cmd) = suggestion.ai_command {\n                    println!(\"AI Command: {}\", ai_cmd);\n                }\n            }\n            Err(e) => eprintln!(\"AI suggestion failed: {}\", e),\n        }\n        return;\n    }\n\n    if args.len() > 2 && args[1] == \"--history\" {\n        let history_path = base_config.settings.get(\"history_file\").map(|s| s.as_str());\n        let max_entries = base_config.settings.get(\"max_history\")\n            .and_then(|s| s.parse::<usize>().ok())\n            .unwrap_or(1000);\n        let history_mgr = HistoryManager::new(history_path).with_max_entries(max_entries);\n\n        match args[2].as_str() {\n            \"recent\" => {\n                let count = args.get(3).and_then(|s| s.parse::<usize>().ok()).unwrap_or(10);\n                if history_mgr.load().is_ok() {\n                    for entry in history_mgr.get_recent(count) {\n                        println!(\"[{}] exit={} {}ms{}\",\n                            entry.command,\n                            entry.exit_code,\n                            entry.duration_ms,\n                            entry.ai_suggestion.as_ref().map(|s| format!(\" (AI: {})\", s)).unwrap_or_default()\n                        );\n                    }\n                }\n            }\n            \"search\" => {\n                let query = args.get(3).map(|s| s.as_str()).unwrap_or(\"\");\n                if history_mgr.load().is_ok() {\n                    for entry in history_mgr.search(query) {\n                        println!(\"[{}] exit={} {}ms\", entry.command, entry.exit_code, entry.duration_ms);\n                    }\n                }\n            }\n            \"clear\" => {\n                if let Err(e) = history_mgr.clear() {\n                    eprintln!(\"Failed to clear history: {}\", e);\n                } else {\n                    println!(\"History cleared.\");\n                }\n            }\n            _ => {\n                eprintln!(\"Usage: shally --history [recent|search|clear]\");\n            }\n        }\n        return;\n    }"
 }
 ```
 
@@ -4267,7 +4267,7 @@ Good, now let me update the AI module to use HistoryEntry instead of Vec<String>
       "priority": "high"
     },
     {
-      "content": "Add history config to PluginConfig and shellai.yaml.example",
+      "content": "Add history config to PluginConfig and shally.yaml.example",
       "status": "pending",
       "priority": "medium"
     },
@@ -4299,7 +4299,7 @@ Good, now let me update the AI module to use HistoryEntry instead of Vec<String>
     "priority": "high"
   },
   {
-    "content": "Add history config to PluginConfig and shellai.yaml.example",
+    "content": "Add history config to PluginConfig and shally.yaml.example",
     "status": "pending",
     "priority": "medium"
   },
@@ -4802,7 +4802,7 @@ Now update the call_api to return ai_command field as well.
 {
   "filePath": "/home/zubarev/sources/shelly/src/ai/mod.rs",
   "oldString": "        Ok(AiSuggestion {\n            command: content,\n            confidence: 0.85,\n            explanation: None,\n        })",
-  "newString": "        let ai_command = if self.is_local_model() {\n            Some(format!(\"shellai-ai:{}\", content))\n        } else {\n            None\n        };\n\n        Ok(AiSuggestion {\n            command: content,\n            confidence: 0.85,\n            explanation: None,\n            ai_command,\n        })"
+  "newString": "        let ai_command = if self.is_local_model() {\n            Some(format!(\"shally-ai:{}\", content))\n        } else {\n            None\n        };\n\n        Ok(AiSuggestion {\n            command: content,\n            confidence: 0.85,\n            explanation: None,\n            ai_command,\n        })"
 }
 ```
 
@@ -4831,7 +4831,7 @@ Now update the test stubs to also include `ai_command`.
 {
   "filePath": "/home/zubarev/sources/shelly/src/ai/mod.rs",
   "oldString": "        if std::env::var(\"SHELLAI_TEST_MODE\").ok().as_deref() == Some(\"1\") {\n            return Ok(AiSuggestion {\n                command: \"echo test-mode\".to_string(),\n                confidence: 0.92,\n                explanation: Some(\"test mode\".to_string()),\n            });\n        }\n        // Local model simulation\n        if self.is_local_model() {\n            return Ok(AiSuggestion {\n                command: \"echo local-suggestion\".to_string(),\n                confidence: 0.90,\n                explanation: Some(\"local model simulated\".to_string()),\n            });\n        }",
-  "newString": "        if std::env::var(\"SHELLAI_TEST_MODE\").ok().as_deref() == Some(\"1\") {\n            return Ok(AiSuggestion {\n                command: \"echo test-mode\".to_string(),\n                confidence: 0.92,\n                explanation: Some(\"test mode\".to_string()),\n                ai_command: None,\n            });\n        }\n        // Local model simulation\n        if self.is_local_model() {\n            return Ok(AiSuggestion {\n                command: \"echo local-suggestion\".to_string(),\n                confidence: 0.90,\n                explanation: Some(\"local model simulated\".to_string()),\n                ai_command: Some(\"shellai-ai:echo local-suggestion\".to_string()),\n            });\n        }"
+  "newString": "        if std::env::var(\"SHELLAI_TEST_MODE\").ok().as_deref() == Some(\"1\") {\n            return Ok(AiSuggestion {\n                command: \"echo test-mode\".to_string(),\n                confidence: 0.92,\n                explanation: Some(\"test mode\".to_string()),\n                ai_command: None,\n            });\n        }\n        // Local model simulation\n        if self.is_local_model() {\n            return Ok(AiSuggestion {\n                command: \"echo local-suggestion\".to_string(),\n                confidence: 0.90,\n                explanation: Some(\"local model simulated\".to_string()),\n                ai_command: Some(\"shally-ai:echo local-suggestion\".to_string()),\n            });\n        }"
 }
 ```
 
@@ -5023,13 +5023,13 @@ Now let's update the main.rs to use HistoryManager and pass history to the AI mo
 <path>/home/zubarev/sources/shelly/src/main.rs</path>
 <type>file</type>
 <content>
-1: use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
-2: use shellai::config;
-3: use shellai::zsh;
-4: use shellai::fish;
-5: use shellai::starship;
-6: use shellai::ai::AiIntegration;
-7: use shellai::history::{HistoryManager, HistoryEntry};
+1: use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
+2: use shally::config;
+3: use shally::zsh;
+4: use shally::fish;
+5: use shally::starship;
+6: use shally::ai::AiIntegration;
+7: use shally::history::{HistoryManager, HistoryEntry};
 8: use std::env;
 9: 
 10: fn main() {
@@ -5107,13 +5107,13 @@ Now let's update the main.rs to use HistoryManager and pass history to the AI mo
 82:     }
 83: 
 84:     if args.len() > 1 && args[1] == "--install" {
-85:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+85:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 86:         println!("{}", zsh::generate_zshrc_snippet(binary_path));
 87:         return;
 88:     }
 89: 
 90:     if args.len() > 1 && args[1] == "--fish-install" {
-91:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shellai");
+91:         let binary_path = args.get(2).map(|s| s.as_str()).unwrap_or("shally");
 92:         println!("{}", fish::generate_config_snippet(binary_path));
 93:         return;
 94:     }
@@ -5205,13 +5205,13 @@ Now let's update the main.rs to use HistoryManager and pass history to the AI mo
 180:                 }
 181:             }
 182:             _ => {
-183:                 eprintln!("Usage: shellai --history [recent|search|clear]");
+183:                 eprintln!("Usage: shally --history [recent|search|clear]");
 184:             }
 185:         }
 186:         return;
 187:     }
 188: 
-189:     println!("ShellAI Framework: Initializing core...");
+189:     println!("Shally Framework: Initializing core...");
 190: 
 191:     let config = base_config.clone();
 192:     println!("Configuration loaded for shell: {}", config.shell_name);
@@ -5230,7 +5230,7 @@ Now let's update the main.rs to use HistoryManager and pass history to the AI mo
 205:         Err(e) => eprintln!("Error during pre-hook: {}", e),
 206:     }
 207: 
-208:     println!("\nShellAI Framework Initialized successfully.");
+208:     println!("\nShally Framework Initialized successfully.");
 209: }
 
 (End of file - total 209 lines)
@@ -5262,7 +5262,7 @@ The main.rs already uses HistoryManager and passes history to the AI module. Now
 
 **Output:**
 ```
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
 error: range pattern bounds cannot have parentheses
    --> src/history/mod.rs:187:19
     |
@@ -5600,7 +5600,7 @@ Now let's also fix the unused import warning.
 4: use std::sync::RwLock;
 5: use serde::{Deserialize, Serialize};
 6: 
-7: const DEFAULT_HISTORY_FILE: &str = ".shellai_history.json";
+7: const DEFAULT_HISTORY_FILE: &str = ".shally_history.json";
 8: const DEFAULT_MAX_ENTRIES: usize = 1000;
 9: 
 10: #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -5694,16 +5694,16 @@ Now let me try to build again.
 
 **Output:**
 ```
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
 warning: unused import: `HistoryEntry`
  --> src/main.rs:7:40
   |
-7 | use shellai::history::{HistoryManager, HistoryEntry};
+7 | use shally::history::{HistoryManager, HistoryEntry};
   |                                        ^^^^^^^^^^^^
   |
   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
 
-warning: `shellai` (bin "shellai") generated 1 warning (run `cargo fix --bin "shellai" -p shellai` to apply 1 suggestion)
+warning: `shally` (bin "shally") generated 1 warning (run `cargo fix --bin "shally" -p shally` to apply 1 suggestion)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.38s
 
 ```
@@ -5727,8 +5727,8 @@ The build succeeded with just a warning about an unused import. Let me fix that 
 ```json
 {
   "filePath": "/home/zubarev/sources/shelly/src/main.rs",
-  "oldString": "use shellai::history::{HistoryManager, HistoryEntry};",
-  "newString": "use shellai::history::HistoryManager;"
+  "oldString": "use shally::history::{HistoryManager, HistoryEntry};",
+  "newString": "use shally::history::HistoryManager;"
 }
 ```
 
@@ -5762,9 +5762,9 @@ Now let me build and run the tests.
 
 **Output:**
 ```
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.45s
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
 error[E0308]: mismatched types
    --> src/ai/mod.rs:223:24
     |
@@ -5808,7 +5808,7 @@ error[E0308]: mismatched types
     |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `SystemTime`
 
 For more information about this error, try `rustc --explain E0308`.
-error: could not compile `shellai` (lib test) due to 7 previous errors
+error: could not compile `shally` (lib test) due to 7 previous errors
 
 ```
 
@@ -6044,7 +6044,7 @@ Now let's run the tests again.
 
 **Output:**
 ```
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
 error[E0308]: mismatched types
    --> src/ai/mod.rs:312:96
     |
@@ -6064,7 +6064,7 @@ error[E0308]: mismatched types
     |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `SystemTime`
 
 For more information about this error, try `rustc --explain E0308`.
-error: could not compile `shellai` (lib test) due to 3 previous errors
+error: could not compile `shally` (lib test) due to 3 previous errors
 warning: build failed, waiting for other jobs to finish...
 
 ```
@@ -6250,9 +6250,9 @@ Now let's run the tests again.
 
 **Output:**
 ```
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 1.03s
-     Running unittests src/lib.rs (target/debug/deps/shellai-8201d93a9d7c73ad)
+     Running unittests src/lib.rs (target/debug/deps/shally-8201d93a9d7c73ad)
 
 running 41 tests
 test ai::tests::test_ai_not_configured ... ok
@@ -6343,7 +6343,7 @@ The tests are mostly passing, but the `test_clear` test seems to be hanging. Let
 288: 
 289:     #[test]
 290:     fn test_max_entries_enforced() {
-291:         let tmp = std::env::temp_dir().join("shellai_test_history4.json");
+291:         let tmp = std::env::temp_dir().join("shally_test_history4.json");
 292:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap())).with_max_entries(3);
 293: 
 294:         for i in 0..5 {
@@ -6360,7 +6360,7 @@ The tests are mostly passing, but the `test_clear` test seems to be hanging. Let
 305: 
 306:     #[test]
 307:     fn test_clear() {
-308:         let tmp = std::env::temp_dir().join("shellai_test_history5.json");
+308:         let tmp = std::env::temp_dir().join("shally_test_history5.json");
 309:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 310: 
 311:         hm.add_entry(HistoryEntry::new("cmd1")).unwrap();
@@ -6372,7 +6372,7 @@ The tests are mostly passing, but the `test_clear` test seems to be hanging. Let
 317: 
 318:     #[test]
 319:     fn test_relevant_for_ai() {
-320:         let tmp = std::env::temp_dir().join("shellai_test_history6.json");
+320:         let tmp = std::env::temp_dir().join("shally_test_history6.json");
 321:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 322: 
 323:         hm.add_entry(HistoryEntry::new("git status")).unwrap();
@@ -6613,9 +6613,9 @@ Now let's run the tests again.
 
 **Output:**
 ```
-   Compiling shellai v0.1.0 (/home/zubarev/sources/shelly)
+   Compiling shally v0.1.0 (/home/zubarev/sources/shelly)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.65s
-     Running unittests src/lib.rs (target/debug/deps/shellai-8201d93a9d7c73ad)
+     Running unittests src/lib.rs (target/debug/deps/shally-8201d93a9d7c73ad)
 
 running 41 tests
 test ai::tests::test_ai_not_configured ... ok
@@ -6662,13 +6662,13 @@ test zsh::tests::test_zsh_precmd_hook ... ok
 
 test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running unittests src/main.rs (target/debug/deps/shellai-09bd51fb65895d18)
+     Running unittests src/main.rs (target/debug/deps/shally-09bd51fb65895d18)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-   Doc-tests shellai
+   Doc-tests shally
 
 running 0 tests
 
@@ -6912,7 +6912,7 @@ Let me look at how they currently interact and what needs to be connected.
 143:                 command: "echo local-suggestion".to_string(),
 144:                 confidence: 0.90,
 145:                 explanation: Some("local model simulated".to_string()),
-146:                 ai_command: Some("shellai-ai:echo local-suggestion".to_string()),
+146:                 ai_command: Some("shally-ai:echo local-suggestion".to_string()),
 147:             });
 148:         }
 149:         let endpoint = self.api_endpoint.as_ref().unwrap();
@@ -6963,7 +6963,7 @@ Let me look at how they currently interact and what needs to be connected.
 194:             .to_string();
 195: 
 196:         let ai_command = if self.is_local_model() {
-197:             Some(format!("shellai-ai:{}", content))
+197:             Some(format!("shally-ai:{}", content))
 198:         } else {
 199:             None
 200:         };
@@ -7190,7 +7190,7 @@ Let me look at how they currently interact and what needs to be connected.
 4: use std::sync::RwLock;
 5: use serde::{Deserialize, Serialize};
 6: 
-7: const DEFAULT_HISTORY_FILE: &str = ".shellai_history.json";
+7: const DEFAULT_HISTORY_FILE: &str = ".shally_history.json";
 8: const DEFAULT_MAX_ENTRIES: usize = 1000;
 9: 
 10: #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -7429,7 +7429,7 @@ Let me look at how they currently interact and what needs to be connected.
 243: 
 244:     #[test]
 245:     fn test_add_and_get_recent() {
-246:         let tmp = std::env::temp_dir().join("shellai_test_history.json");
+246:         let tmp = std::env::temp_dir().join("shally_test_history.json");
 247:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 248: 
 249:         hm.add_entry(HistoryEntry::new("cmd1")).unwrap();
@@ -7446,7 +7446,7 @@ Let me look at how they currently interact and what needs to be connected.
 260: 
 261:     #[test]
 262:     fn test_search() {
-263:         let tmp = std::env::temp_dir().join("shellai_test_history2.json");
+263:         let tmp = std::env::temp_dir().join("shally_test_history2.json");
 264:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 265: 
 266:         hm.add_entry(HistoryEntry::new("git status")).unwrap();
@@ -7462,7 +7462,7 @@ Let me look at how they currently interact and what needs to be connected.
 276: 
 277:     #[test]
 278:     fn test_save_and_load() {
-279:         let tmp = std::env::temp_dir().join("shellai_test_history3.json");
+279:         let tmp = std::env::temp_dir().join("shally_test_history3.json");
 280:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 281: 
 282:         hm.add_entry(HistoryEntry::new("echo hello")).unwrap();
@@ -7478,7 +7478,7 @@ Let me look at how they currently interact and what needs to be connected.
 292: 
 293:     #[test]
 294:     fn test_max_entries_enforced() {
-295:         let tmp = std::env::temp_dir().join("shellai_test_history4.json");
+295:         let tmp = std::env::temp_dir().join("shally_test_history4.json");
 296:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap())).with_max_entries(3);
 297: 
 298:         for i in 0..5 {
@@ -7495,7 +7495,7 @@ Let me look at how they currently interact and what needs to be connected.
 309: 
 310:     #[test]
 311:     fn test_clear() {
-312:         let tmp = std::env::temp_dir().join("shellai_test_history5.json");
+312:         let tmp = std::env::temp_dir().join("shally_test_history5.json");
 313:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 314: 
 315:         hm.add_entry(HistoryEntry::new("cmd1")).unwrap();
@@ -7507,7 +7507,7 @@ Let me look at how they currently interact and what needs to be connected.
 321: 
 322:     #[test]
 323:     fn test_relevant_for_ai() {
-324:         let tmp = std::env::temp_dir().join("shellai_test_history6.json");
+324:         let tmp = std::env::temp_dir().join("shally_test_history6.json");
 325:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 326: 
 327:         hm.add_entry(HistoryEntry::new("git status")).unwrap();
@@ -7527,7 +7527,7 @@ Let me look at how they currently interact and what needs to be connected.
 341: 
 342:     #[test]
 343:     fn test_load_nonexistent_file() {
-344:         let tmp = std::env::temp_dir().join("shellai_test_noexist.json");
+344:         let tmp = std::env::temp_dir().join("shally_test_noexist.json");
 345:         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 346:         let count = hm.load().unwrap();
 347:         assert_eq!(count, 0);
@@ -7612,10 +7612,10 @@ There are 4 markdown files in the docs folder. Let me read all of them in parall
 <path>/home/zubarev/sources/shelly/docs/session.md</path>
 <type>file</type>
 <content>
-1: # ShellAI Session Log
+1: # Shally Session Log
 2: 
 3: ## Goal
-4: Implement a configuration loader for the ShellAI Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.
+4: Implement a configuration loader for the Shally Rust framework to parse external config files (YAML/JSON/TOML) and populate `PluginConfig`.
 5: 
 6: ## Progress
 7: 
@@ -7675,7 +7675,7 @@ There are 4 markdown files in the docs folder. Let me read all of them in parall
 <path>/home/zubarev/sources/shelly/docs/phase_1_mvp_plan.md</path>
 <type>file</type>
 <content>
-1: # ShellAI Framework Development Plan: Phase 1 (MVP) - FINAL BUILD PLAN
+1: # Shally Framework Development Plan: Phase 1 (MVP) - FINAL BUILD PLAN
 2: 
 3: ## Overview
 4: The objective of Phase 1 is to establish a stable, modular shell framework foundation built in Rust. This phase shifts us from research/planning mode into the initial implementation stage. We will focus on achieving superior user experience through advanced context awareness and AI-driven command suggestions, ensuring compatibility with Zsh, Fish, and Starship right from the start.
@@ -7765,7 +7765,7 @@ There are 4 markdown files in the docs folder. Let me read all of them in parall
 <path>/home/zubarev/sources/shelly/docs/progress.md</path>
 <type>file</type>
 <content>
-1: # ShellAI Framework Progress Report
+1: # Shally Framework Progress Report
 2: 
 3: ## ✅ Completed Tasks
 4: 
@@ -7916,7 +7916,7 @@ There are 4 markdown files in the docs folder. Let me read all of them in parall
 42: #### `test_generate_zshrc_snippet`
 43: **Type:** Unit Test
 44: **Goal:** Verify zshrc snippet generation for .zshrc installation.
-45: **Verification:** Output contains `precmd_shellai`, `preexec_shellai`, `precmd_functions`, and binary path.
+45: **Verification:** Output contains `precmd_shally`, `preexec_shally`, `precmd_functions`, and binary path.
 46: 
 47: ---
 48: 
@@ -7935,7 +7935,7 @@ There are 4 markdown files in the docs folder. Let me read all of them in parall
 61: #### `test_generate_config_snippet`
 62: **Type:** Unit Test
 63: **Goal:** Verify config.fish snippet generation for Fish installation.
-64: **Verification:** Output contains `shellai_prompt`, `shellai_command_not_found`, `fish_prompt`, and binary path.
+64: **Verification:** Output contains `shally_prompt`, `shally_command_not_found`, `fish_prompt`, and binary path.
 65: 
 66: ---
 67: 

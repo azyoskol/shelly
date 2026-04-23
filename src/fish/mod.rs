@@ -23,24 +23,24 @@ pub fn command_not_found<P: ShellPlugin>(
 /// Generates Fish hook installation code for config.fish.
 ///
 /// This function outputs the config.fish snippet that users can add to their
-/// ~/.config/fish/config.fish to enable ShellAI hooks in their Fish environment.
+/// ~/.config/fish/config.fish to enable Shally hooks in their Fish environment.
 pub fn generate_config_snippet(binary_path: &str) -> String {
     format!(
-        r#"# ShellAI Framework - Fish Integration
-# Add this to your ~/.config/fish/config.fish to enable ShellAI hooks
+        r#"# Shally Framework - Fish Integration
+# Add this to your ~/.config/fish/config.fish to enable Shally hooks
 
 # Pre-prompt hook
-function shellai_prompt
+function shally_prompt
     {binary_path} --fish-hook prompt
 end
 
 # Command not found handler
-function shellai_command_not_found
+function shally_command_not_found
     {binary_path} --fish-hook command_not_found $argv[1]
 end
 
 # Register the prompt hook
-fish_prompt += shellai_prompt
+fish_prompt += shally_prompt
 "#,
         binary_path = binary_path
     )
@@ -73,10 +73,10 @@ mod tests {
 
     #[test]
     fn test_generate_config_snippet() {
-        let snippet = generate_config_snippet("/usr/local/bin/shellai");
-        assert!(snippet.contains("shellai_prompt"));
-        assert!(snippet.contains("shellai_command_not_found"));
-        assert!(snippet.contains("/usr/local/bin/shellai"));
+        let snippet = generate_config_snippet("/usr/local/bin/shally");
+        assert!(snippet.contains("shally_prompt"));
+        assert!(snippet.contains("shally_command_not_found"));
+        assert!(snippet.contains("/usr/local/bin/shally"));
         assert!(snippet.contains("fish_prompt"));
     }
 }

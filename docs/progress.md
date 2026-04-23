@@ -1,4 +1,4 @@
-# ShellAI Framework Progress Report
+# Shally Framework Progress Report
 
 ## ✅ Completed Tasks
 

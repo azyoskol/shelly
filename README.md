@@ -1,6 +1,6 @@
--# ShellAI Framework (Shelly)
+-# Shally Framework (Shelly)
 
-ShellAI Framework is a modular Rust platform for integrating AI-powered prompts into the command line. The architecture supports a plugin system, integration with Zsh, Fish, and Starship, and MVP AI integration via an external API or local models.
+Shally Framework is a modular Rust platform for integrating AI-powered prompts into the command line. The architecture supports a plugin system, integration with Zsh, Fish, and Starship, and MVP AI integration via an external API or local models.
 
 ## Key Ideas
 - Separation of the core framework from plugins via the ShellPlugin trait
@@ -29,7 +29,7 @@ Requirements: Rust toolchain (stable) and cargo.
    cargo test
 
 4. Run the binary:
-   - By default, the binary named `shellai` is produced.
+   - By default, the binary named `shally` is produced.
    - Quick start (Zsh):
      cargo run -- --install
      # prints a .zshrc snippet
@@ -58,13 +58,13 @@ Requirements: Rust toolchain (stable) and cargo.
 - Zsh snippet output:
 ```
 $ cargo run -- --install
-# ShellAI Framework - Zsh Integration
+# Shally Framework - Zsh Integration
 # <snippet output>...
 ```
 - Fish snippet output:
 ```
 $ cargo run -- --fish-install
-# ShellAI Framework - Fish Integration
+# Shally Framework - Fish Integration
 # <snippet output>...
 ```
 - Starship context export:

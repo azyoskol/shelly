@@ -143,7 +143,7 @@ impl AiIntegration {
                 command: "echo local-suggestion".to_string(),
                 confidence: 0.90,
                 explanation: Some("local model simulated".to_string()),
-                ai_command: Some("shellai-ai:echo local-suggestion".to_string()),
+                ai_command: Some("shally-ai:echo local-suggestion".to_string()),
             });
         }
         let endpoint = self.api_endpoint.as_ref().unwrap();
@@ -194,7 +194,7 @@ impl AiIntegration {
             .to_string();
 
         let ai_command = if self.is_local_model() {
-            Some(format!("shellai-ai:{}", content))
+            Some(format!("shally-ai:{}", content))
         } else {
             None
         };
