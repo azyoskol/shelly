@@ -1,5 +1,5 @@
-// src/main.rs
 use shellai::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
+use shellai::config;
 use shellai::zsh;
 use shellai::fish;
 use shellai::starship;
@@ -9,12 +9,34 @@ use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
+    // Resolve config from --config flag, env var, or default locations
+    let explicit_config = args.iter()
+        .position(|a| a == "--config")
+        .and_then(|i| args.get(i + 1))
+        .map(|s| s.as_str());
+
+    let base_config = if let Some(path) = config::resolve_config_path(explicit_config) {
+        match config::load_config_from_path(&std::path::PathBuf::from(path.clone())) {
+            Some(c) => {
+                println!("Configuration loaded from: {}", path.display());
+                c
+            }
+            None => {
+                eprintln!("Warning: Could not parse config file {}, using defaults.", path.display());
+                PluginConfig::default()
+            }
+        }
+    } else {
+        PluginConfig::default()
+    };
+
     if args.len() > 2 && args[1] == "--hook" {
         let hook_type = args[2].as_str();
         let mut context = ShellContext::new();
         let config = PluginConfig {
             shell_name: "zsh".to_string(),
-            settings: std::collections::HashMap::new(),
+            settings: base_config.settings.clone(),
+            ..base_config.clone()
         };
         let _ = MockPlugin::initialize(&config);
 
@@ -38,7 +60,8 @@ fn main() {
         let mut context = ShellContext::new();
         let config = PluginConfig {
             shell_name: "fish".to_string(),
-            settings: std::collections::HashMap::new(),
+            settings: base_config.settings.clone(),
+            ..base_config.clone()
         };
         let _ = MockPlugin::initialize(&config);
 
@@ -107,10 +130,7 @@ fn main() {
 
     println!("ShellAI Framework: Initializing core...");
 
-    let config = PluginConfig {
-        shell_name: "zsh".to_string(),
-        settings: std::collections::HashMap::new(),
-    };
+    let config = base_config.clone();
     println!("Configuration loaded for shell: {}", config.shell_name);
 
     let mut context = ShellContext::new();

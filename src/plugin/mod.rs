@@ -2,6 +2,7 @@
 pub mod mock_plugin;
 
 use std::collections::HashMap;
+use serde::{Serialize, Deserialize};
 
 /// A simplified representation of shell environment variables
 pub type ShellContext = HashMap<String, String>;
@@ -21,8 +22,24 @@ pub trait ShellPlugin {
     fn post_execute_hook(_command: &str, exit_code: i32) -> Result<(), String>;
 }
 
-/// Placeholder structure to hold loaded configuration data for plugins
+/// Configuration structure loaded from YAML file or defaults
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PluginConfig {
-    pub shell_name: String, // e.g., "zsh", "fish"
+    #[serde(default = "default_shell_name")]
+    pub shell_name: String,
+    #[serde(default)]
     pub settings: HashMap<String, String>,
+}
+
+fn default_shell_name() -> String {
+    "zsh".to_string()
+}
+
+impl Default for PluginConfig {
+    fn default() -> Self {
+        PluginConfig {
+            shell_name: default_shell_name(),
+            settings: HashMap::new(),
+        }
+    }
 }

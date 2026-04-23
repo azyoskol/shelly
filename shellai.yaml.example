@@ -1,0 +1,15 @@
+# ShellAI Framework Configuration
+# Place this file as shellai.yaml in current directory, home directory (~),
+# or specify path via --config flag or SHELLAI_CONFIG environment variable.
+
+# Target shell: zsh, fish, etc. (default: zsh)
+shell_name: zsh
+
+# Plugin settings key-value pairs
+settings:
+  # AI endpoint URL
+  api_endpoint: "https://api.openai.com/v1/chat/completions"
+  # Request timeout in seconds
+  timeout: "30"
+  # Custom model name
+  model: "gpt-3.5-turbo"
