@@ -4,6 +4,8 @@
 use crate::ai::AiIntegration;
 use crate::history::HistoryManager;
 use crate::core::{PluginConfig, ShellContext};
+use crate::errors::{log_ai_suggestion, ShallyResult};
+use log::{info, warn, error, debug};
 
 /// Handles --ai-config command
 pub fn handle_ai_config_command(args: &[String], base_config: &PluginConfig) -> Option<Result<(), ()>> {
@@ -21,6 +23,8 @@ fn execute_ai_config(args: &[String], base_config: &PluginConfig) {
     let api_key = args.get(3).map(|s| s.as_str()).unwrap_or("");
     let model = args.get(4).map(|s| s.as_str()).unwrap_or("gpt-3.5-turbo");
 
+    debug!("Initializing AI with endpoint: {}, model: {}", endpoint, model);
+    
     let mut ai = AiIntegration::new();
     ai.with_config(endpoint, api_key).with_model(model);
 
@@ -32,16 +36,21 @@ fn execute_ai_config(args: &[String], base_config: &PluginConfig) {
         .and_then(|s| s.parse::<usize>().ok())
         .unwrap_or(1000);
     let history_mgr = HistoryManager::new(history_path).with_max_entries(max_entries);
+    
     if let Err(e) = history_mgr.load() {
-        eprintln!("Warning: Could not load history: {}", e);
+        warn!("Could not load history: {}", e);
     }
 
     let ai_history = history_mgr.get_relevant_for_ai(&context, 10);
 
     match ai.suggest_command(&context, &ai_history) {
         Ok(suggestion) => {
+            log_ai_suggestion(model, suggestion.confidence);
+            info!("AI generated command suggestion with confidence {:.2}", suggestion.confidence);
+            
             println!("Command: {}", suggestion.command);
             if let Some(exp) = suggestion.explanation {
+                debug!("AI explanation: {}", exp);
                 println!("Explanation: {}", exp);
             }
             println!("Confidence: {:.2}", suggestion.confidence);
@@ -49,6 +58,9 @@ fn execute_ai_config(args: &[String], base_config: &PluginConfig) {
                 println!("AI Command: {}", ai_cmd);
             }
         }
-        Err(e) => eprintln!("AI suggestion failed: {}", e),
+        Err(e) => {
+            error!("AI suggestion failed: {}", e);
+            eprintln!("AI suggestion failed: {}", e);
+        }
     }
 }

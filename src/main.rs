@@ -1,3 +1,6 @@
+// src/main.rs
+// Shally Framework - Main entry point
+
 use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockPlugin};
 use shally::config;
 use shally::zsh;
@@ -7,9 +10,13 @@ use shally::ai::AiIntegration;
 use shally::history::HistoryManager;
 use shally::cli;
 use shally::commands;
+use shally::errors;
 use std::env;
 
 fn main() {
+    // Initialize logging
+    errors::init_logging();
+    
     let args: Vec<String> = env::args().collect();
 
     // Resolve config from --config flag, env var, or default locations

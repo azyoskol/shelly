@@ -1,6 +1,10 @@
+// src/config/mod.rs
+// Configuration loading and resolution module
+
 use std::fs;
 use std::path::{Path, PathBuf};
-use crate::plugin::PluginConfig;
+use crate::core::PluginConfig;
+use crate::errors::{ShallyError, ShallyResult, log_config_loaded, log_config_warning};
 
 const DEFAULT_CONFIG_FILENAME: &str = "shally.yaml";
 
@@ -15,6 +19,15 @@ pub fn load_config_from_path(path: &Path) -> Option<PluginConfig> {
     let contents = fs::read_to_string(path).ok()?;
     let config: PluginConfig = serde_yaml::from_str(&contents).ok()?;
     Some(config)
+}
+
+/// Load configuration with proper error handling
+pub fn load_config_with_error(path: &Path) -> ShallyResult<PluginConfig> {
+    let contents = fs::read_to_string(path)
+        .map_err(|e| ShallyError::ConfigNotFound(path.display().to_string()))?;
+    
+    serde_yaml::from_str(&contents)
+        .map_err(|e| ShallyError::ConfigParseError(e.to_string()))
 }
 
 /// Resolves the config file path from CLI argument, environment variable, or default locations.

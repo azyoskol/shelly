@@ -1,5 +1,5 @@
 // src/plugin/mock_plugin.rs
-use crate::plugin::{ShellContext, ShellPlugin, PluginConfig};
+use crate::core::{ShellContext, ShellPlugin, PluginConfig};
 
 #[derive(Default)]
 pub struct MockPlugin;
@@ -13,11 +13,13 @@ impl ShellPlugin for MockPlugin {
         if config.shell_name.is_empty() {
             return Err("Configuration must specify a shell.".to_string());
         }
+        // Add mock plugin marker to context
         Ok(())
     }
 
     fn pre_prompt_hook(context: &mut ShellContext) -> Result<(), String> {
         // Simulate updating context (e.g., adding the current directory)
+        context.insert("MOCK_PLUGIN_ACTIVE".to_string(), "true".to_string());
         context.insert("CURRENT_DIR".to_string(), "test/path".to_string());
         Ok(())
     }
@@ -50,7 +52,9 @@ mod tests {
         let mut context: ShellContext = HashMap::new();
         MockPlugin::pre_prompt_hook(&mut context)?;
 
-        // Verify if the context variable was correctly updated by the hook
+        // Verify if the context variables were correctly updated by the hook
+        assert!(context.contains_key("MOCK_PLUGIN_ACTIVE"));
+        assert_eq!(context.get("MOCK_PLUGIN_ACTIVE").unwrap(), "true");
         assert!(context.contains_key("CURRENT_DIR"));
         assert_eq!(context.get("CURRENT_DIR").unwrap(), "test/path");
 

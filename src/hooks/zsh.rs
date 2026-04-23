@@ -4,6 +4,8 @@
 use crate::zsh;
 use crate::core::{PluginConfig, ShellContext, ShellPlugin};
 use crate::plugin::mock_plugin::MockPlugin;
+use crate::errors::log_hook_execution;
+use log::debug;
 
 /// Executes zsh hook based on hook type
 pub fn execute_zsh_hook(hook_type: &str, command: Option<&str>, base_config: &PluginConfig) {
@@ -13,6 +15,10 @@ pub fn execute_zsh_hook(hook_type: &str, command: Option<&str>, base_config: &Pl
         settings: base_config.settings.clone(),
         ..base_config.clone()
     };
+    
+    log_hook_execution(hook_type, "zsh");
+    debug!("Executing zsh hook: {} with command: {:?}", hook_type, command);
+    
     let _ = MockPlugin::initialize(&config);
 
     match hook_type {
