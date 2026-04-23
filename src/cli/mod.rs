@@ -29,7 +29,7 @@ pub fn resolve_config(explicit_path: Option<&str>) -> PluginConfig {
     }
 }
 
-/// Handles --hook and --fish-hook commands
+/// Handles --hook, --fish-hook, and --bash-hook commands
 pub fn handle_hook_commands(args: &[String], base_config: &PluginConfig) -> Option<Result<(), ()>> {
     if args.len() > 2 && args[1] == "--hook" {
         hooks::execute_zsh_hook(&args[2], args.get(3).map(|s| s.as_str()), base_config);
@@ -38,6 +38,11 @@ pub fn handle_hook_commands(args: &[String], base_config: &PluginConfig) -> Opti
 
     if args.len() > 2 && args[1] == "--fish-hook" {
         hooks::execute_fish_hook(&args[2], args.get(3).map(|s| s.as_str()), base_config);
+        return Some(Ok(()));
+    }
+
+    if args.len() > 2 && args[1] == "--bash-hook" {
+        hooks::execute_bash_hook(&args[2], args.get(3).map(|s| s.as_str()), base_config);
         return Some(Ok(()));
     }
 

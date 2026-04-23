@@ -5,6 +5,7 @@ use shally::plugin::{PluginConfig, ShellContext, ShellPlugin, mock_plugin::MockP
 use shally::config;
 use shally::zsh;
 use shally::fish;
+use shally::bash;
 use shally::starship;
 use shally::ai::AiIntegration;
 use shally::history::HistoryManager;

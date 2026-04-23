@@ -1,11 +1,11 @@
 # Shally Framework
 
-**Shally** is a modular Rust platform for integrating AI-powered prompts into your command line. The architecture supports a flexible plugin system, seamless integration with Zsh, Fish, and Starship shells, and MVP AI integration via external APIs or local models.
+**Shally** is a modular Rust platform for integrating AI-powered prompts into your command line. The architecture supports a flexible plugin system, seamless integration with Zsh, Fish, Bash, and Starship shells, and MVP AI integration via external APIs or local models.
 
 ## Key Features
 
 - **Plugin Architecture**: Clean separation of the core framework from plugins via the `ShellPlugin` trait
-- **Shell Integration**: Native support for Zsh (precmd/preexec), Fish (prompt/command_not_found), and Starship via `SHELLAI_*` environment variables
+- **Shell Integration**: Native support for Zsh (precmd/preexec), Fish (prompt/command_not_found), Bash (PROMPT_COMMAND/DEBUG trap), and Starship via `SHELLAI_*` environment variables
 - **AI-Powered Prompts**: MVP AI module supporting external APIs (OpenAI-compatible) and local models
 - **CLI-First Design**: Comprehensive CLI flags for quick testing, installation, and configuration
 - **Modular Codebase**: Well-organized source code with clear separation of concerns
@@ -27,14 +27,16 @@ src/
 │   └── history.rs   # History management (recent, search, clear)
 ├── hooks/           # Shell hook implementations
 │   ├── zsh.rs       # Zsh precmd/preexec hooks
-│   └── fish.rs      # Fish prompt/command_not_found hooks
+│   ├── fish.rs      # Fish prompt/command_not_found hooks
+│   └── bash.rs      # Bash precmd/preexec hooks
 ├── ai/              # AI integration layer
 ├── config/          # Configuration management
 ├── history/         # History storage and retrieval
 ├── plugin/          # Plugin system implementation
 ├── starship/        # Starship shell integration
 ├── zsh/             # Zsh-specific utilities
-└── fish/            # Fish-specific utilities
+├── fish/            # Fish-specific utilities
+└── bash/            # Bash-specific utilities
 ```
 
 ## Installation
@@ -78,6 +80,12 @@ src/
      # Prints Fish shell configuration snippet
      ```
    
+   - **Bash shell config**:
+     ```bash
+     cargo run -- --bash-install
+     # Prints Bash shell configuration snippet
+     ```
+   
    - **Configure AI API**:
      ```bash
      cargo run -- --ai-config https://api.openai.com/v1/chat/completions <api_key> [model]
@@ -90,6 +98,7 @@ src/
 |---------|-------------|
 | `--install` | Generate Zsh installation snippet |
 | `--fish-install` | Generate Fish shell installation snippet |
+| `--bash-install` | Generate Bash shell installation snippet |
 | `--export-context` | Export current context for Starship integration |
 | `--ai-config <url> <key> [model]` | Configure AI API endpoint and credentials |
 | `--history [recent\|search\|clear]` | Manage command history |
@@ -126,6 +135,15 @@ $ cargo run -- --fish-install
 # ... (hook definitions)
 ```
 
+### Bash Installation Snippet
+
+```bash
+$ cargo run -- --bash-install
+# Shally Framework - Bash Integration
+# Add the following to your ~/.bashrc:
+# ... (hook definitions including PROMPT_COMMAND and DEBUG trap)
+```
+
 ### Starship Context Export
 
 ```bash
@@ -158,9 +176,9 @@ $ cargo test
 - **`src/core/`**: Fundamental types (`PluginConfig`, `ShellContext`) and the `ShellPlugin` trait
 - **`src/cli/`**: Configuration resolution and command routing logic
 - **`src/commands/`**: Individual command handlers for each CLI operation
-- **`src/hooks/`**: Shell-specific hook implementations for Zsh and Fish
+- **`src/hooks/`**: Shell-specific hook implementations for Zsh, Fish, and Bash
 - **`src/plugin/`**: Plugin lifecycle management and `MockPlugin` for testing
-- **`src/zsh/` & `src/fish/`**: Shell-specific utilities and snippet generators
+- **`src/zsh/`, `src/fish/`, & `src/bash/`**: Shell-specific utilities and snippet generators
 - **`src/starship/`**: Environment variable export for Starship integration
 - **`src/ai/`**: AI integration layer with API client and local model support
 - **`src/config/`**: Configuration file parsing and management
@@ -192,7 +210,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Roadmap
 
 - [ ] Enhanced local model support
-- [ ] Additional shell integrations (Bash, PowerShell)
+- [ ] Additional shell integrations (PowerShell)
 - [ ] Plugin marketplace/discovery
 - [ ] Advanced AI prompt templates
 - [ ] Performance optimizations
