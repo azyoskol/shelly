@@ -1,5 +1,8 @@
 ```
-# Compiled and build artifacts
+# Compiled and binary files
+*.pyc
+__pycache__/
+*.class
 *.o
 *.obj
 *.exe
@@ -9,19 +12,19 @@
 *.out
 
 # Dependencies
-target/
-**/target/
-.cargo/
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-
-# Environment
+node_modules/
+venv/
+.venv/
 .env
 .env.local
-.env.*
+*.env.*
+
+# Build artifacts
+dist/
+build/
+target/
+*.log
+*.tmp
 
 # Editors
 .vscode/
@@ -29,6 +32,19 @@ target/
 *.swp
 *.swo
 
-# Rust-specific
-**/*.rs.bk
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Python specific
+.mypy_cache/
+.pytest_cache/
+
+# Gradle
+.gradle/
 ```

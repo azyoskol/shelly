@@ -22,7 +22,8 @@ src/
 ├── hooks/             # Shell hook executors
 │   ├── mod.rs         # Hooks module exports
 │   ├── zsh.rs         # Zsh hook execution (precmd, preexec)
-│   └── fish.rs        # Fish hook execution (prompt, command_not_found)
+│   ├── fish.rs        # Fish hook execution (prompt, command_not_found)
+│   └── bash.rs        # Bash hook execution (precmd, preexec)
 │
 ├── cli/               # CLI orchestration
 │   └── mod.rs         # Config resolution, hook dispatch, default mode
@@ -35,6 +36,7 @@ src/
 ├── config/            # Configuration loading (unchanged)
 ├── fish/              # Fish shell integration (unchanged)
 ├── zsh/               # Zsh shell integration (unchanged)
+├── bash/              # Bash shell integration (new)
 ├── starship/          # Starship integration (unchanged)
 ├── history/           # History management (unchanged)
 ├── main.rs            # Simplified entry point (44 lines)
@@ -49,7 +51,7 @@ src/
 - Separates fundamental types from plugin implementations
 
 ### 2. Commands Module (`src/commands/`)
-- **install.rs**: Handles `--install` and `--fish-install` commands
+- **install.rs**: Handles `--install`, `--fish-install`, and `--bash-install` commands
 - **context.rs**: Handles `--export-context` command
 - **ai_config.rs**: Handles `--ai-config` command with AI integration
 - **history.rs**: Handles `--history` subcommands (recent, search, clear)
@@ -58,6 +60,7 @@ src/
 ### 3. Hooks Module (`src/hooks/`)
 - **zsh.rs**: Executes zsh hooks (precmd, preexec)
 - **fish.rs**: Executes fish hooks (prompt, command_not_found)
+- **bash.rs**: Executes bash hooks (precmd, preexec)
 - Separates hook execution logic from CLI parsing
 
 ### 4. CLI Module (`src/cli/`)
