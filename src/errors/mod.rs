@@ -2,7 +2,7 @@
 // Error handling and logging utilities for Shally Framework
 
 use std::fmt;
-use log::{error, warn, info, debug};
+use log::{warn, info, debug};
 
 /// Centralized error type for Shally Framework
 #[derive(Debug)]

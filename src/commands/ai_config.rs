@@ -4,7 +4,7 @@
 use crate::ai::AiIntegration;
 use crate::history::HistoryManager;
 use crate::core::{PluginConfig, ShellContext};
-use crate::errors::{log_ai_suggestion, ShallyResult};
+use crate::errors::log_ai_suggestion;
 use log::{info, warn, error, debug};
 
 /// Handles --ai-config command

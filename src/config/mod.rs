@@ -4,7 +4,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 use crate::core::PluginConfig;
-use crate::errors::{ShallyError, ShallyResult, log_config_loaded, log_config_warning};
+use crate::errors::{ShallyError, ShallyResult};
 
 const DEFAULT_CONFIG_FILENAME: &str = "shally.yaml";
 
@@ -24,7 +24,7 @@ pub fn load_config_from_path(path: &Path) -> Option<PluginConfig> {
 /// Load configuration with proper error handling
 pub fn load_config_with_error(path: &Path) -> ShallyResult<PluginConfig> {
     let contents = fs::read_to_string(path)
-        .map_err(|e| ShallyError::ConfigNotFound(path.display().to_string()))?;
+        .map_err(|_e| ShallyError::ConfigNotFound(path.display().to_string()))?;
     
     serde_yaml::from_str(&contents)
         .map_err(|e| ShallyError::ConfigParseError(e.to_string()))

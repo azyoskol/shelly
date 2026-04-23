@@ -2,7 +2,7 @@
 // Fish hook execution handlers
 
 use crate::fish;
-use crate::core::{PluginConfig, ShellContext};
+use crate::core::{PluginConfig, ShellContext, ShellPlugin};
 use crate::plugin::mock_plugin::MockPlugin;
 use crate::errors::log_hook_execution;
 use log::debug;

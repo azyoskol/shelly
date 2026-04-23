@@ -3,7 +3,7 @@
 
 use crate::history::HistoryManager;
 use crate::core::PluginConfig;
-use crate::errors::{log_history_operation, ShallyResult};
+use crate::errors::log_history_operation;
 use log::{info, warn, debug};
 
 /// Handles --history command

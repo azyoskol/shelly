@@ -5,10 +5,7 @@ use crate::core::PluginConfig;
 use crate::config;
 use crate::commands;
 use crate::hooks;
-use crate::ai::AiIntegration;
-use crate::history::HistoryManager;
-use crate::errors::{ShallyResult, log_config_loaded, log_config_warning};
-use std::env;
+use crate::errors::{log_config_loaded, log_config_warning};
 use log::{info, warn};
 
 /// Resolves configuration from explicit path, environment, or defaults
