@@ -4,5 +4,5 @@
 pub mod types;
 pub mod plugin;
 
-pub use types::ShellContext;
+pub use types::{PluginConfig, ShellContext};
 pub use plugin::ShellPlugin;

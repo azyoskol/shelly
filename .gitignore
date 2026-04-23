@@ -1,7 +1,8 @@
 ```
-# Compiled and build artifacts
+# Compiled and binary files
 *.pyc
 __pycache__/
+*.class
 *.o
 *.obj
 *.exe
@@ -19,22 +20,22 @@ node_modules/
 zig-cache/
 .deps/
 
-# Logs and temp files
+# Build artifacts
+dist/
+build/
+target/
 *.log
 *.tmp
-*.swp
-*.swo
-
-# Environment
-.env
-.env.local
-.env.*
 
 # Editors
 .vscode/
 .idea/
 *.swp
 *.swo
+
+# System files
+.DS_Store
+Thumbs.db
 
 # Coverage
 coverage/

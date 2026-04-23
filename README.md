@@ -1,105 +1,217 @@
--# Shally Framework (Shelly)
+# Shally Framework
 
-Shally Framework is a modular Rust platform for integrating AI-powered prompts into the command line. The architecture supports a plugin system, integration with Zsh, Fish, and Starship, and MVP AI integration via an external API or local models.
+**Shally** is a modular Rust platform for integrating AI-powered prompts into your command line. The architecture supports a flexible plugin system, seamless integration with Zsh, Fish, Bash, and Starship shells, and MVP AI integration via external APIs or local models.
 
-## Key Ideas
-- Separation of the core framework from plugins via the ShellPlugin trait
-- Zsh (precmd/preexec), Fish (prompt/command_not_found) integration and exporting context to Starship via SHELLAI_* environment variables
-- MVP AI prompts module with external API (OpenAI-compatible) and local models
-- CLI flags for quick testing and demonstration
+## Key Features
 
-## Highlights
-- Core Framework: plugin lifecycle and context
-- Plugin System: MockPlugin for testing and a real plugin architecture
-- Zsh, Fish, Starship integrations: example hooks, snippet generators, and context export
-- AI API Hook: sending requests to the API and displaying prompts
-- Local model support (optional via test mode)
+- **Plugin Architecture**: Clean separation of the core framework from plugins via the `ShellPlugin` trait
+- **Shell Integration**: Native support for Zsh (precmd/preexec), Fish (prompt/command_not_found), Bash (PROMPT_COMMAND/DEBUG trap), and Starship via `SHELLAI_*` environment variables
+- **AI-Powered Prompts**: MVP AI module supporting external APIs (OpenAI-compatible) and local models
+- **CLI-First Design**: Comprehensive CLI flags for quick testing, installation, and configuration
+- **Modular Codebase**: Well-organized source code with clear separation of concerns
+
+## Project Structure
+
+```
+src/
+├── main.rs          # CLI entry point and command orchestration
+├── lib.rs           # Module exports and public API
+├── core/            # Core types and traits
+│   ├── types.rs     # PluginConfig, ShellContext
+│   └── plugin.rs    # ShellPlugin trait definition
+├── cli/             # CLI resolution and dispatch logic
+├── commands/        # Command handlers
+│   ├── install.rs   # Zsh/Fish installation snippets
+│   ├── context.rs   # Context export for Starship
+│   ├── ai_config.rs # AI API configuration
+│   └── history.rs   # History management (recent, search, clear)
+├── hooks/           # Shell hook implementations
+│   ├── zsh.rs       # Zsh precmd/preexec hooks
+│   ├── fish.rs      # Fish prompt/command_not_found hooks
+│   └── bash.rs      # Bash precmd/preexec hooks
+├── ai/              # AI integration layer
+├── config/          # Configuration management
+├── history/         # History storage and retrieval
+├── plugin/          # Plugin system implementation
+├── starship/        # Starship shell integration
+├── zsh/             # Zsh-specific utilities
+├── fish/            # Fish-specific utilities
+└── bash/            # Bash-specific utilities
+```
 
 ## Installation
-Requirements: Rust toolchain (stable) and cargo.
 
-1. Clone the repository (path will vary):
-   git clone <repository>
-   cd shelly
+### Requirements
 
-2. Build the project:
+- Rust toolchain (stable)
+- Cargo package manager
+
+### Build & Run
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd shally
+   ```
+
+2. **Build the project**:
+   ```bash
    cargo build
+   ```
 
-3. Run tests:
+3. **Run tests**:
+   ```bash
    cargo test
+   ```
 
-4. Run the binary:
-   - By default, the binary named `shally` is produced.
-   - Quick start (Zsh):
+4. **Run the binary**:
+   
+   The compiled binary is named `shally`.
+   
+   - **Quick start (Zsh)**:
+     ```bash
      cargo run -- --install
-     # prints a .zshrc snippet
-   - Fish config:
+     # Prints a .zshrc snippet to add to your shell config
+     ```
+   
+   - **Fish shell config**:
+     ```bash
      cargo run -- --fish-install
-   - AI API configuration:
+     # Prints Fish shell configuration snippet
+     ```
+   
+   - **Bash shell config**:
+     ```bash
+     cargo run -- --bash-install
+     # Prints Bash shell configuration snippet
+     ```
+   
+   - **Configure AI API**:
+     ```bash
      cargo run -- --ai-config https://api.openai.com/v1/chat/completions <api_key> [model]
-     # example: gpt-4
-
-5. Local models and test mode
-   - Local models do not require an API key.
-   - For testing without real API calls: 
-     export SHELLAI_TEST_MODE=1
-     cargo test
-   - Local-mode CLI support may evolve in future releases.
+     # Example: cargo run -- --ai-config https://api.openai.com/v1/chat/completions sk-KEY gpt-4
+     ```
 
 ## CLI Commands
-- Install Zsh snippet: cargo run -- --install
-- Install Fish config: cargo run -- --fish-install
-- Export context for Starship: cargo run -- --export-context
-- AI config via API: cargo run -- --ai-config https://api.openai.com/v1/chat/completions <api_key> gpt-4
-- Test mode for local models: export SHELLAI_TEST_MODE=1; cargo test
-- Local mode example (planned): see test mode
 
-## Output Examples
-- Zsh snippet output:
-```
-$ cargo run -- --install
-# Shally Framework - Zsh Integration
-# <snippet output>...
-```
-- Fish snippet output:
-```
-$ cargo run -- --fish-install
-# Shally Framework - Fish Integration
-# <snippet output>...
-```
-- Starship context export:
-```
-$ cargo run -- --export-context
-SHELLAI_CURRENT_DIR=/home/user
-SHELLAI_PWD=/home/user
-```
-- AI config via API:
-```
-$ cargo run -- --ai-config https://api.openai.com/v1/chat/completions sk-KEY gpt-4
-Command: ls -la
-Explanation: None
-Confidence: 0.85
-```
-- Test mode for local models:
-```
+| Command | Description |
+|---------|-------------|
+| `--install` | Generate Zsh installation snippet |
+| `--fish-install` | Generate Fish shell installation snippet |
+| `--bash-install` | Generate Bash shell installation snippet |
+| `--export-context` | Export current context for Starship integration |
+| `--ai-config <url> <key> [model]` | Configure AI API endpoint and credentials |
+| `--history [recent\|search\|clear]` | Manage command history |
+| `--help` | Display help information |
+
+### Test Mode for Local Models
+
+For testing without real API calls, use test mode:
+
+```bash
 export SHELLAI_TEST_MODE=1
 cargo test
 ```
 
-## Testing
-- All tests run via cargo test. The repository includes tests for local modes and API integration.
+Local models do not require an API key. Support for local model CLI configuration may evolve in future releases.
 
-## Architecture (brief)
-- src/lib.rs: module exports and API
-- src/main.rs: CLI for demonstration
-- src/plugin/: plugin system and MockPlugin
-- src/zsh/: Zsh hooks and snippet generators
-- src/fish/: Fish hooks and configs
-- src/starship/: export context to SHELLAI_*
-- src/ai/: AI integration (AiIntegration, AiSuggestion) and API/Local model calls
+## Output Examples
+
+### Zsh Installation Snippet
+
+```bash
+$ cargo run -- --install
+# Shally Framework - Zsh Integration
+# Add the following to your ~/.zshrc:
+# ... (hook definitions)
+```
+
+### Fish Installation Snippet
+
+```bash
+$ cargo run -- --fish-install
+# Shally Framework - Fish Integration
+# Add the following to your Fish config:
+# ... (hook definitions)
+```
+
+### Bash Installation Snippet
+
+```bash
+$ cargo run -- --bash-install
+# Shally Framework - Bash Integration
+# Add the following to your ~/.bashrc:
+# ... (hook definitions including PROMPT_COMMAND and DEBUG trap)
+```
+
+### Starship Context Export
+
+```bash
+$ cargo run -- --export-context
+SHELLAI_CURRENT_DIR=/home/user
+SHELLAI_PWD=/home/user
+```
+
+### AI Configuration
+
+```bash
+$ cargo run -- --ai-config https://api.openai.com/v1/chat/completions sk-KEY gpt-4
+Command: ls -la
+Explanation: Lists all files including hidden ones in long format
+Confidence: 0.85
+```
+
+### Test Mode
+
+```bash
+$ export SHELLAI_TEST_MODE=1
+$ cargo test
+# Runs tests with mock AI responses
+```
+
+## Architecture Overview
+
+- **`src/lib.rs`**: Module exports and public API definitions
+- **`src/main.rs`**: CLI argument parsing and command dispatch
+- **`src/core/`**: Fundamental types (`PluginConfig`, `ShellContext`) and the `ShellPlugin` trait
+- **`src/cli/`**: Configuration resolution and command routing logic
+- **`src/commands/`**: Individual command handlers for each CLI operation
+- **`src/hooks/`**: Shell-specific hook implementations for Zsh, Fish, and Bash
+- **`src/plugin/`**: Plugin lifecycle management and `MockPlugin` for testing
+- **`src/zsh/`, `src/fish/`, & `src/bash/`**: Shell-specific utilities and snippet generators
+- **`src/starship/`**: Environment variable export for Starship integration
+- **`src/ai/`**: AI integration layer with API client and local model support
+- **`src/config/`**: Configuration file parsing and management
+- **`src/history/`**: Command history storage and retrieval
+
+## Testing
+
+All tests are run via `cargo test`. The test suite includes:
+
+- Unit tests for core functionality
+- Integration tests for API calls
+- Mock-based tests for plugin system
+- Test mode support for local development without API calls
 
 ## Contributing
-- Contributions are welcome. Please open issues/PRs describing changes and test coverage.
+
+Contributions are welcome! Please follow these guidelines:
+
+1. **Open an Issue**: Describe the feature or bug you'd like to address
+2. **Fork the Repository**: Create your feature branch
+3. **Implement Changes**: Ensure code follows existing patterns
+4. **Add Tests**: Maintain or improve test coverage
+5. **Submit a PR**: Include a clear description of changes
 
 ## License
-- License not specified in README; please refer to repository licenses (MIT/Apache-2.0, etc.).
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Roadmap
+
+- [ ] Enhanced local model support
+- [ ] Additional shell integrations (PowerShell)
+- [ ] Plugin marketplace/discovery
+- [ ] Advanced AI prompt templates
+- [ ] Performance optimizations
+- [ ] Documentation improvements
