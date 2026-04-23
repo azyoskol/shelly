@@ -10,14 +10,15 @@ __pycache__/
 *.so
 *.a
 *.out
+target/
 
 # Dependencies
-node_modules/
-venv/
 .venv/
-.env
-.env.local
-*.env.*
+venv/
+node_modules/
+.julia/
+zig-cache/
+.deps/
 
 # Build artifacts
 dist/
@@ -41,10 +42,7 @@ coverage/
 htmlcov/
 .coverage
 
-# Python specific
-.mypy_cache/
-.pytest_cache/
-
-# Gradle
-.gradle/
+# Rust specific
+Cargo.lock
+*.rs.bk
 ```
