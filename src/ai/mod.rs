@@ -4,6 +4,7 @@
 //! This module handles the pipeline from context + history to AI API call to suggestion display.
 
 use crate::plugin::ShellContext;
+use crate::history::HistoryEntry;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone)]
@@ -11,6 +12,7 @@ pub struct AiSuggestion {
     pub command: String,
     pub confidence: f32,
     pub explanation: Option<String>,
+    pub ai_command: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -82,7 +84,7 @@ impl AiIntegration {
     pub fn suggest_command(
         &self,
         context: &ShellContext,
-        history: &[String],
+        history: &[HistoryEntry],
     ) -> Result<AiSuggestion, String> {
         // Local model path handling
         if self.is_local_model() {
@@ -107,14 +109,17 @@ impl AiIntegration {
         self.call_api(&prompt)
     }
 
-    fn build_prompt(&self, context: &ShellContext, history: &[String]) -> String {
+    fn build_prompt(&self, context: &ShellContext, history: &[HistoryEntry]) -> String {
         let context_str = context
             .iter()
             .map(|(k, v)| format!("{}={}", k, v))
             .collect::<Vec<_>>()
             .join(", ");
 
-        let history_str = history.iter().map(|s| s.as_str()).collect::<Vec<_>>().join("; ");
+        let history_str = history.iter()
+            .map(|e| format!("[exit={}, {}ms] {}", e.exit_code, e.duration_ms, e.command))
+            .collect::<Vec<_>>()
+            .join("; ");
 
         format!(
             "You are a shell command assistant. Based on the following context and command history, suggest the next terminal command.\n\nContext: {}\nCommand History: {}\n\nRespond with ONLY the command to execute, nothing else.",
@@ -129,6 +134,7 @@ impl AiIntegration {
                 command: "echo test-mode".to_string(),
                 confidence: 0.92,
                 explanation: Some("test mode".to_string()),
+                ai_command: None,
             });
         }
         // Local model simulation
@@ -137,6 +143,7 @@ impl AiIntegration {
                 command: "echo local-suggestion".to_string(),
                 confidence: 0.90,
                 explanation: Some("local model simulated".to_string()),
+                ai_command: Some("shellai-ai:echo local-suggestion".to_string()),
             });
         }
         let endpoint = self.api_endpoint.as_ref().unwrap();
@@ -186,10 +193,17 @@ impl AiIntegration {
             .trim()
             .to_string();
 
+        let ai_command = if self.is_local_model() {
+            Some(format!("shellai-ai:{}", content))
+        } else {
+            None
+        };
+
         Ok(AiSuggestion {
             command: content,
             confidence: 0.85,
             explanation: None,
+            ai_command,
         })
     }
 }
@@ -202,7 +216,13 @@ mod tests {
     fn test_ai_not_configured() {
         let ai = AiIntegration::new();
         let context = ShellContext::new();
-        let history = vec!["ls -la".to_string()];
+        let history = vec![HistoryEntry {
+            command: "ls -la".to_string(),
+            exit_code: 0,
+            duration_ms: 12,
+            timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_secs(),
+            ai_suggestion: None,
+        }];
 
         let result = ai.suggest_command(&context, &history);
         assert!(result.is_err());
@@ -214,7 +234,22 @@ mod tests {
         let mut context = ShellContext::new();
         context.insert("PWD".to_string(), "/home/user".to_string());
 
-        let history = vec!["ls".to_string(), "cd /tmp".to_string()];
+        let history = vec![
+            HistoryEntry {
+                command: "ls".to_string(),
+                exit_code: 0,
+                duration_ms: 5,
+                timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_secs(),
+                ai_suggestion: None,
+            },
+            HistoryEntry {
+                command: "cd /tmp".to_string(),
+                exit_code: 0,
+                duration_ms: 1,
+                timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_secs(),
+                ai_suggestion: None,
+            },
+        ];
         let prompt = ai.build_prompt(&context, &history);
 
         assert!(prompt.contains("PWD=/home/user"));
@@ -242,7 +277,13 @@ mod tests {
             ai.with_model(name);
 
             let context = ShellContext::new();
-            let history = vec!["echo hi".to_string()];
+            let history = vec![HistoryEntry {
+                command: "echo hi".to_string(),
+                exit_code: 0,
+                duration_ms: 3,
+                timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_secs(),
+                ai_suggestion: None,
+            }];
             let result = ai.suggest_command(&context, &history);
             assert!(result.is_ok());
             let suggestion = result.unwrap();
@@ -267,7 +308,11 @@ mod tests {
             .with_model("gpt-4");
 
         let context = ShellContext::new();
-        let history = vec!["ls".to_string(), "cd /home".to_string()];
+        let ts = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_secs();
+        let history = vec![
+            HistoryEntry { command: "ls".to_string(), exit_code: 0, duration_ms: 5, timestamp: ts, ai_suggestion: None },
+            HistoryEntry { command: "cd /home".to_string(), exit_code: 0, duration_ms: 1, timestamp: ts, ai_suggestion: None },
+        ];
 
         let result = integration.suggest_command(&context, &history);
         assert!(result.is_ok());
@@ -315,8 +360,9 @@ mod tests {
         let mut integration = AiIntegration::new();
         integration.with_local_model("http://localhost:11434/v1/chat/completions");
 
+        let ts = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_secs();
         let context = ShellContext::new();
-        let history = vec!["ls".to_string()];
+        let history = vec![HistoryEntry { command: "ls".to_string(), exit_code: 0, duration_ms: 5, timestamp: ts, ai_suggestion: None }];
 
         let result = integration.suggest_command(&context, &history);
         assert!(result.is_ok());

@@ -4,6 +4,7 @@ use shellai::zsh;
 use shellai::fish;
 use shellai::starship;
 use shellai::ai::AiIntegration;
+use shellai::history::HistoryManager;
 use std::env;
 
 fn main() {
@@ -113,17 +114,74 @@ fn main() {
         ai.with_config(endpoint, api_key).with_model(model);
 
         let context = ShellContext::new();
-        let history: Vec<String> = vec![];
 
-        match ai.suggest_command(&context, &history) {
+        // Load history for AI context
+        let history_path = base_config.settings.get("history_file").map(|s| s.as_str());
+        let max_entries = base_config.settings.get("max_history")
+            .and_then(|s| s.parse::<usize>().ok())
+            .unwrap_or(1000);
+        let history_mgr = HistoryManager::new(history_path).with_max_entries(max_entries);
+        if let Err(e) = history_mgr.load() {
+            eprintln!("Warning: Could not load history: {}", e);
+        }
+
+        let ai_history = history_mgr.get_relevant_for_ai(&context, 10);
+
+        match ai.suggest_command(&context, &ai_history) {
             Ok(suggestion) => {
                 println!("Command: {}", suggestion.command);
                 if let Some(exp) = suggestion.explanation {
                     println!("Explanation: {}", exp);
                 }
                 println!("Confidence: {:.2}", suggestion.confidence);
+                if let Some(ref ai_cmd) = suggestion.ai_command {
+                    println!("AI Command: {}", ai_cmd);
+                }
             }
             Err(e) => eprintln!("AI suggestion failed: {}", e),
+        }
+        return;
+    }
+
+    if args.len() > 2 && args[1] == "--history" {
+        let history_path = base_config.settings.get("history_file").map(|s| s.as_str());
+        let max_entries = base_config.settings.get("max_history")
+            .and_then(|s| s.parse::<usize>().ok())
+            .unwrap_or(1000);
+        let history_mgr = HistoryManager::new(history_path).with_max_entries(max_entries);
+
+        match args[2].as_str() {
+            "recent" => {
+                let count = args.get(3).and_then(|s| s.parse::<usize>().ok()).unwrap_or(10);
+                if history_mgr.load().is_ok() {
+                    for entry in history_mgr.get_recent(count) {
+                        println!("[{}] exit={} {}ms{}",
+                            entry.command,
+                            entry.exit_code,
+                            entry.duration_ms,
+                            entry.ai_suggestion.as_ref().map(|s| format!(" (AI: {})", s)).unwrap_or_default()
+                        );
+                    }
+                }
+            }
+            "search" => {
+                let query = args.get(3).map(|s| s.as_str()).unwrap_or("");
+                if history_mgr.load().is_ok() {
+                    for entry in history_mgr.search(query) {
+                        println!("[{}] exit={} {}ms", entry.command, entry.exit_code, entry.duration_ms);
+                    }
+                }
+            }
+            "clear" => {
+                if let Err(e) = history_mgr.clear() {
+                    eprintln!("Failed to clear history: {}", e);
+                } else {
+                    println!("History cleared.");
+                }
+            }
+            _ => {
+                eprintln!("Usage: shellai --history [recent|search|clear]");
+            }
         }
         return;
     }

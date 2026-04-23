@@ -5,3 +5,4 @@ pub mod zsh;
 pub mod fish;
 pub mod starship;
 pub mod ai;
+pub mod history;
