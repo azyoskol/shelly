@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use std::sync::RwLock;
 use serde::{Deserialize, Serialize};
 
-const DEFAULT_HISTORY_FILE: &str = ".shellai_history.json";
+const DEFAULT_HISTORY_FILE: &str = ".shally_history.json";
 const DEFAULT_MAX_ENTRIES: usize = 1000;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -243,7 +243,7 @@ mod tests {
 
     #[test]
     fn test_add_and_get_recent() {
-        let tmp = std::env::temp_dir().join("shellai_test_history.json");
+        let tmp = std::env::temp_dir().join("shally_test_history.json");
         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 
         hm.add_entry(HistoryEntry::new("cmd1")).unwrap();
@@ -260,7 +260,7 @@ mod tests {
 
     #[test]
     fn test_search() {
-        let tmp = std::env::temp_dir().join("shellai_test_history2.json");
+        let tmp = std::env::temp_dir().join("shally_test_history2.json");
         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 
         hm.add_entry(HistoryEntry::new("git status")).unwrap();
@@ -276,7 +276,7 @@ mod tests {
 
     #[test]
     fn test_save_and_load() {
-        let tmp = std::env::temp_dir().join("shellai_test_history3.json");
+        let tmp = std::env::temp_dir().join("shally_test_history3.json");
         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 
         hm.add_entry(HistoryEntry::new("echo hello")).unwrap();
@@ -292,7 +292,7 @@ mod tests {
 
     #[test]
     fn test_max_entries_enforced() {
-        let tmp = std::env::temp_dir().join("shellai_test_history4.json");
+        let tmp = std::env::temp_dir().join("shally_test_history4.json");
         let hm = HistoryManager::new(Some(tmp.to_str().unwrap())).with_max_entries(3);
 
         for i in 0..5 {
@@ -309,7 +309,7 @@ mod tests {
 
     #[test]
     fn test_clear() {
-        let tmp = std::env::temp_dir().join("shellai_test_history5.json");
+        let tmp = std::env::temp_dir().join("shally_test_history5.json");
         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 
         hm.add_entry(HistoryEntry::new("cmd1")).unwrap();
@@ -321,7 +321,7 @@ mod tests {
 
     #[test]
     fn test_relevant_for_ai() {
-        let tmp = std::env::temp_dir().join("shellai_test_history6.json");
+        let tmp = std::env::temp_dir().join("shally_test_history6.json");
         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
 
         hm.add_entry(HistoryEntry::new("git status")).unwrap();
@@ -341,7 +341,7 @@ mod tests {
 
     #[test]
     fn test_load_nonexistent_file() {
-        let tmp = std::env::temp_dir().join("shellai_test_noexist.json");
+        let tmp = std::env::temp_dir().join("shally_test_noexist.json");
         let hm = HistoryManager::new(Some(tmp.to_str().unwrap()));
         let count = hm.load().unwrap();
         assert_eq!(count, 0);

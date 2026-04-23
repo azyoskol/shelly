@@ -2,7 +2,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use crate::plugin::PluginConfig;
 
-const DEFAULT_CONFIG_FILENAME: &str = "shellai.yaml";
+const DEFAULT_CONFIG_FILENAME: &str = "shally.yaml";
 
 /// Attempts to load PluginConfig from a YAML file at the given path.
 /// Returns Default config if file doesn't exist or can't be parsed.
@@ -25,8 +25,8 @@ pub fn resolve_config_path(explicit_path: Option<&str>) -> Option<PathBuf> {
         return Some(PathBuf::from(p));
     }
 
-    // 2. SHELLAI_CONFIG environment variable
-    if let Ok(env_path) = std::env::var("SHELLAI_CONFIG") {
+    // 2. SHALLY_CONFIG environment variable
+    if let Ok(env_path) = std::env::var("SHALLY_CONFIG") {
         let p = PathBuf::from(&env_path);
         if p.exists() {
             return Some(p);
@@ -48,7 +48,7 @@ pub fn resolve_config_path(explicit_path: Option<&str>) -> Option<PathBuf> {
     None
 }
 
-/// Returns the path to ~/.shellai.yaml, or None if home dir can't be determined.
+/// Returns the path to ~/.shally.yaml, or None if home dir can't be determined.
 fn dirs_home() -> PathBuf {
     std::env::var("HOME")
         .map(|h| PathBuf::from(h).join(DEFAULT_CONFIG_FILENAME))
@@ -123,7 +123,7 @@ settings:
 
     #[test]
     fn test_load_config_from_nonexistent_path() {
-        let path = Path::new("/tmp/shellai_nonexistent_test.yaml");
+        let path = Path::new("/tmp/shally_nonexistent_test.yaml");
         let config = load_config(path);
         assert_eq!(config.shell_name, "zsh");
         assert!(config.settings.is_empty());

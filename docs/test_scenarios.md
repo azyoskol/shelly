@@ -42,7 +42,7 @@ Total: **16 tests** across 5 modules. All tests pass.
 #### `test_generate_zshrc_snippet`
 **Type:** Unit Test
 **Goal:** Verify zshrc snippet generation for .zshrc installation.
-**Verification:** Output contains `precmd_shellai`, `preexec_shellai`, `precmd_functions`, and binary path.
+**Verification:** Output contains `precmd_shally`, `preexec_shally`, `precmd_functions`, and binary path.
 
 ---
 
@@ -61,7 +61,7 @@ Total: **16 tests** across 5 modules. All tests pass.
 #### `test_generate_config_snippet`
 **Type:** Unit Test
 **Goal:** Verify config.fish snippet generation for Fish installation.
-**Verification:** Output contains `shellai_prompt`, `shellai_command_not_found`, `fish_prompt`, and binary path.
+**Verification:** Output contains `shally_prompt`, `shally_command_not_found`, `fish_prompt`, and binary path.
 
 ---
 

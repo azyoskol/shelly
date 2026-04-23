@@ -1,4 +1,4 @@
-# ShellAI Framework Development Plan: Phase 1 (MVP) - FINAL BUILD PLAN
+# Shally Framework Development Plan: Phase 1 (MVP) - FINAL BUILD PLAN
 
 ## Overview
 The objective of Phase 1 is to establish a stable, modular shell framework foundation built in Rust. This phase shifts us from research/planning mode into the initial implementation stage. We will focus on achieving superior user experience through advanced context awareness and AI-driven command suggestions, ensuring compatibility with Zsh, Fish, and Starship right from the start.
