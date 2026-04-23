@@ -6,6 +6,7 @@ pub mod plugin;
 pub mod config;
 pub mod zsh;
 pub mod fish;
+pub mod bash;
 pub mod starship;
 pub mod ai;
 pub mod history;
