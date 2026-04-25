@@ -1,4 +1,4 @@
-module github.com/anomalyco/opencode/tools/shelly
+module github.com/azyoskol/shelly
 
 go 1.26.1
 

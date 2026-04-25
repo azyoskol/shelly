@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/anomalyco/opencode/tools/shelly/pkg/shelly"
+	"github.com/azyoskol/shelly/pkg/shelly"
 )
 
 func TestGetSuggestionsReturnsEmptySliceWithEmptyInput(t *testing.T) {

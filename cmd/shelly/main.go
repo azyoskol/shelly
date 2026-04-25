@@ -7,10 +7,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/anomalyco/opencode/tools/shelly/internal/agents"
-	"github.com/anomalyco/opencode/tools/shelly/internal/shell"
-	"github.com/anomalyco/opencode/tools/shelly/internal/starship"
-	"github.com/anomalyco/opencode/tools/shelly/pkg/shelly"
+	"github.com/azyoskol/shelly/internal/agents"
+	"github.com/azyoskol/shelly/internal/shell"
+	"github.com/azyoskol/shelly/internal/starship"
+	"github.com/azyoskol/shelly/pkg/shelly"
 )
 
 var rootCmd = &cobra.Command{

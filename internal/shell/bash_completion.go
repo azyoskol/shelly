@@ -1,7 +1,7 @@
 package shell
 
 import (
-	"github.com/anomalyco/opencode/tools/shelly/pkg/shelly"
+	"github.com/azyoskol/shelly/pkg/shelly"
 )
 
 type BashAdapter struct {

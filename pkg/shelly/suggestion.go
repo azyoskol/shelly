@@ -3,8 +3,8 @@ package shelly
 import (
 	"context"
 
-	ctxanalyzer "github.com/anomalyco/opencode/tools/shelly/internal/context"
-	"github.com/anomalyco/opencode/tools/shelly/internal/agents"
+	ctxanalyzer "github.com/azyoskol/shelly/internal/context"
+	"github.com/azyoskol/shelly/internal/agents"
 )
 
 type Suggestion struct {
@@ -60,6 +60,5 @@ func GetSuggestions(ctx context.Context, req CompletionRequest) ([]Suggestion, e
 		}
 	}
 
-	// Filter by settings (for now just return as-is)
 	return result, nil
 }

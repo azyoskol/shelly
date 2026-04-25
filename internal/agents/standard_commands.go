@@ -90,7 +90,7 @@ func (agent *StandardCommandsAgent) GenerateSuggestions(input string) ([]Suggest
 func InitCommonCommands(agent *StandardCommandsAgent) {
 	// Git commands
 	agent.cache.entries["git"] = []string{
-		"git clone https://github.com/anomalyco/opencode/tools/shelly.git",
+		"git clone https://github.com/azyoskol/shelly.git",
 		"git checkout -b feature/ai-completions",
 		"git push origin main",
 		"git pull upstream main",
@@ -108,7 +108,7 @@ func InitCommonCommands(agent *StandardCommandsAgent) {
 
 	// Go commands
 	agent.cache.entries["go"] = []string{
-		"go mod init github.com/anomalyco/opencode/tools/shelly",
+		"go mod init github.com/azyoskol/shelly",
 		"go get github.com/spf13/cobra@latest",
 		"go test ./... -coverprofile=coverage.out",
 		"go run cmd/shelly/main.go --help",
