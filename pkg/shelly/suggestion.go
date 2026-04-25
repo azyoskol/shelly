@@ -1,11 +1,21 @@
 package shelly
 
-import "context"
+import (
+	"context"
+
+	ctxanalyzer "github.com/anomalyco/opencode/tools/shelly/internal/context"
+)
 
 type Suggestion struct {
 	Text        string `json:"text"`
 	Description string `json:"description,omitempty"`
 	Priority    int    `json:"priority,omitempty"`
+}
+
+type SuggestionSettings struct {
+	EnableSessionHistory    bool `json:"enable_session_history"`
+	SessionMaxSize          int  `json:"session_max_size"`
+	IncludeEnvironmentInfo bool `json:"include_environment_info"`
 }
 
 type CompletionRequest struct {
@@ -15,15 +25,20 @@ type CompletionRequest struct {
 	Settings SuggestionSettings  // From config.yaml
 }
 
-type SuggestionSettings struct {
-	EnableSessionHistory    bool `json:"enable_session_history"`
-	SessionMaxSize          int  `json:"session_max_size"`
-	IncludeEnvironmentInfo bool `json:"include_environment_info"`
-}
-
 func GetSuggestions(ctx context.Context, req CompletionRequest) ([]Suggestion, error) {
 	if req.Input == "" {
 		return nil, ErrContextUnavailable
 	}
+
+	// Analyze context and enrich request
+	analyzedCtx, err := ctxanalyzer.AnalyzeContext(req.Context)
+	if err != nil {
+		return nil, err
+	}
+
+	_ = analyzedCtx
+
+	// Here we would call the appropriate agent based on input
+	// For now, returning empty as stub
 	return []Suggestion{}, nil
 }

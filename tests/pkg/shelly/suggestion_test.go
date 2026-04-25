@@ -2,12 +2,13 @@ package shelly
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"github.com/anomalyco/opencode/tools/shelly/pkg/shelly"
 )
 
-func TestGetSuggestionsReturnsEmptyWhenNoInput(t *testing.T) {
+func TestGetSuggestionsReturnsEmptySliceWithEmptyInput(t *testing.T) {
 	req := shelly.CompletionRequest{
 		Input:   "",
 		Context: map[string]any{"cwd": "/"},
@@ -19,8 +20,12 @@ func TestGetSuggestionsReturnsEmptyWhenNoInput(t *testing.T) {
 	}
 
 	got, err := shelly.GetSuggestions(context.Background(), req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	if err == nil {
+		t.Fatalf("expected error, got nil")
+	}
+	
+	if !errors.Is(err, shelly.ErrContextUnavailable) {
+		t.Errorf("expected ErrContextUnavailable, got %v", err)
 	}
 
 	if len(got) != 0 {
