@@ -11,7 +11,7 @@ type Suggestion struct {
 type CompletionRequest struct {
 	Input     string               // Partial command being typed
 	Context  map[string]any      // Working directory, env vars, etc.
-	History   []string             // Recent commands from session
+	History  []string             // Recent commands from session
 	Settings SuggestionSettings  // From config.yaml
 }
 
@@ -22,6 +22,8 @@ type SuggestionSettings struct {
 }
 
 func GetSuggestions(ctx context.Context, req CompletionRequest) ([]Suggestion, error) {
-	// Stub implementation - returns empty slice
+	if req.Input == "" {
+		return nil, ErrContextUnavailable
+	}
 	return []Suggestion{}, nil
 }
