@@ -11,12 +11,24 @@ GO_BIN ?= go
 DOCKER_COMPOSE ?= docker-compose
 VERBOSE ?= false
 
+# Validate required tools
+check_tools:
+	@echo "Checking for required tools..."
+	@if ! command -v $(GO_BIN) >/dev/null 2>&1; then
+		@echo "Error: Go not found. Please install Go from https://golang.org/dl/"
+		@exit 1
+	fi
+	@if ! command -v golangci-lint >/dev/null 2>&1; then
+		@echo "Warning: golangci-lint not found. Install with: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b \$$GOPATH/bin v1.58.2"
+	fi
+
 # Default target
 all:
 	@echo "========================================"
 	@echo "Shelly Build & Test Suite"
 	@echo "========================================"
 	@echo "Running all targets..."
+	@make check_tools
 	@make build
 	@make test
 	@make lint
@@ -45,9 +57,14 @@ lint:
 
 # Format code with gofmt and goimports
 format:
+	@echo "Checking for goimports tool..."
+	if ! command -v goimports >/dev/null 2>&1; then
+		@echo "Error: goimports not found. Install it with: go install golang.org/x/tools/cmd/goimports@latest"
+		exit 1
+	fi
 	@echo "Formatting code..."
+	goimports -w .
 	gofmt -s -w .
-goimports -w .
 
 # Clean build artifacts
 clean:
@@ -65,6 +82,7 @@ help:
 	@echo "  make lint    - Run linters"
 	@echo "  make format  - Format code with gofmt and goimports"
 	@echo "  make clean   - Clean build artifacts"
+	@echo "  make check_tools - Validate required tools are installed"
 	@echo ""
 	@echo "Usage: make [target] [--verbose]"
 
