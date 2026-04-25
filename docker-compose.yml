@@ -1,0 +1,39 @@
+# Multi-Shell Testing Environment
+# This setup allows you to test Shelly's completions across bash, zsh, and fish simultaneously
+
+version: '3.8'
+
+services:
+  # Bash completion testing container
+  shelly-bash:
+    build:
+      context: .
+      dockerfile: Dockerfile.bash
+    volumes:
+      - ../..:/project
+    networks:
+      - shelly-test
+
+  # Zsh completion testing container  
+  shelly-zsh:
+    build:
+      context: .
+      dockerfile: Dockerfile.zsh
+    volumes:
+      - ../..:/project
+    networks:
+      - shelly-test
+
+  # Fish completion testing container
+  shelly-fish:
+    build:
+      context: .
+      dockerfile: Dockerfile.fish
+    volumes:
+      - ../..:/project
+    networks:
+      - shelly-test
+
+networks:
+  shelly-test:
+    driver: bridge

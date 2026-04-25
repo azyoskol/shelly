@@ -1,0 +1,37 @@
+{
+  "name": "Shelly Development Container",
+  "build": {
+    "dockerfile": "Dockerfile.devcontainer"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwind-css-intellisense"
+      ],
+      "settings": {
+        "go.goroot": "/usr/local/go",
+        "go.testFlags": ["-v", "-race"],
+        "editor.formatOnSave": true,
+        "gopls": {
+          "ui": 2,
+          "uiTools": [
+            "go.mod",
+            "go.sum"
+          ],
+          "caddish": false
+        },
+        "[go]": {
+          "editor.suggest.snippets.preventDefault": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "echo 'Shelly development container ready!'",
+  "onCreateCommand": "echo 'Development container created successfully.'"
+}
