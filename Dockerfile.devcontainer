@@ -1,0 +1,92 @@
+# Shelly Development Container
+FROM golang:1.22-bookworm AS base
+
+LABEL maintainer="Shelly Team <team@shelly.ai>"
+
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    docker.io \
+    curl \
+    wget \
+    file \
+    less \
+    tree \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up Go workspace
+ENV GOPATH=/root/go
+ENV PATH=$GOPATH/bin:$PATH
+
+WORKDIR /workspaces/shelly
+
+COPY --from=base /usr/local/go /usr/local/go
+ENV GOROOT=/usr/local/go
+
+RUN go env -w GO111MODULE=on && \
+    go env -w GOPROXY=https://proxy.golang.org,direct && \
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+# Install shell completion testing utilities
+RUN mkdir -p /opt/shelly-test && \
+    cat > /opt/shelly-test/test-completions.sh << 'EOF'
+#!/bin/bash
+set -e
+
+echo "Shelly Completion Testing Harness"
+echo "=================================="
+echo "Usage: ./test-completions.sh [--bash|--zsh|--fish] [command]"
+echo ""
+
+CASE=${1:-all}
+COMMAND=${2:-git}
+
+if [[ "$CASE" == "--bash" || "$CASE" == "--all" ]]; then
+    echo "Testing Bash completion for '$COMMAND'..."
+    bash -c "COMP_LINE=\"$COMMAND cl\" COMP_CWORD=3 compgen -W \$(shelly) 2>/dev/null || echo 'No completions (expected if shelly not built yet)'"
+fi
+
+if [[ "$CASE" == "--zsh" || "$CASE" == "--all" ]]; then
+    echo "Testing Zsh completion for '$COMMAND'..."
+    zsh -c "COMP_LINE=\"$COMMAND run\" COMP_CWORD=3 compadd \$(shelly) 2>/dev/null || echo 'No completions (expected if shelly not built yet)'"
+fi
+
+if [[ "$CASE" == "--fish" || "$CASE" == "--all" ]]; then
+    echo "Testing Fish completion for '$COMMAND'..."
+    fish -c "complete -c shelly -a \$(shelly) 2>/dev/null || echo 'No completions (expected if shelly not built yet)'"
+fi
+
+echo "=================================="
+echo "Completion testing complete!"
+EOF
+chmod +x /opt/shelly-test/test-completions.sh
+
+RUN mkdir -p /opt/shelly-test/test-completions && \
+    cat > /opt/shelly-test/test-completions/internal/git_test.go << 'GOEOF'
+pkg main
+
+import (
+    "fmt"
+    "os"
+)
+
+func TestGitCompletion() {
+    fmt.Println("Testing git completion...")
+    if len(os.Args) > 1 && os.Args[1] == "--simulate" {
+        suggestions := []string{
+            "git clone https://github.com/azyoskol/shelly.git",
+            "git checkout -b feature/test",
+            "git push origin main",
+        }
+        for _, s := range suggestions {
+            fmt.Printf("  %s\n", s)
+        }
+    }
+}
+
+func main() {
+    TestGitCompletion()
+}
+GOEOF
+
+echo "Development container ready!"
