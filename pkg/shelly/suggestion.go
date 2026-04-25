@@ -4,6 +4,7 @@ import (
 	"context"
 
 	ctxanalyzer "github.com/anomalyco/opencode/tools/shelly/internal/context"
+	"github.com/anomalyco/opencode/tools/shelly/internal/agents"
 )
 
 type Suggestion struct {
@@ -38,7 +39,27 @@ func GetSuggestions(ctx context.Context, req CompletionRequest) ([]Suggestion, e
 
 	_ = analyzedCtx
 
-	// Here we would call the appropriate agent based on input
-	// For now, returning empty as stub
-	return []Suggestion{}, nil
+	// Use registry to get suggestions based on input
+	reg := agents.NewRegistry()
+	agent := agents.NewStandardCommandsAgent()
+	agents.InitCommonCommands(agent)
+	reg.Register("default", agent)
+
+	suggestions, err := reg.GetSuggestions(req.Input)
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert from agents.Suggestion to shelly.Suggestion
+	result := make([]Suggestion, len(suggestions))
+	for i, s := range suggestions {
+		result[i] = Suggestion{
+			Text:        s.Text,
+			Description: s.Description,
+			Priority:    s.Priority,
+		}
+	}
+
+	// Filter by settings (for now just return as-is)
+	return result, nil
 }
