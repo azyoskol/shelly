@@ -9,12 +9,22 @@ import (
 
 	"github.com/anomalyco/opencode/tools/shelly/internal/agents"
 	"github.com/anomalyco/opencode/tools/shelly/internal/shell"
+	"github.com/anomalyco/opencode/tools/shelly/internal/starship"
 	"github.com/anomalyco/opencode/tools/shelly/pkg/shelly"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "shelly",
 	Short: "Intelligent shell completion assistant",
+}
+
+var pluginCmd = &cobra.Command{
+	Use:   "plugin",
+	Short: "Generate starship plugin metadata",
+	Run: func(cmd *cobra.Command, args []string) {
+		plugin := starship.NewPlugin()
+		fmt.Println(plugin.GenerateModuleInfo())
+	},
 }
 
 func Execute() {
@@ -25,6 +35,8 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.AddCommand(pluginCmd)
+
 	// Initialize standard commands agent
 	stdAgent := agents.NewStandardCommandsAgent()
 	agents.InitCommonCommands(stdAgent)
