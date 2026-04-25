@@ -1,0 +1,52 @@
+# Binaries
+*.exe
+*.exe~
+*.dll.a
+*.so
+*.dylib
+*.out
+
+# Output of the go coverage tool
+*.out
+*.prof
+coverage.txt
+cover.out
+
+# Go workspace files
+go.work.sum
+
+# Dependency directories
+vendor/
+Godeps/
+pkg/mod/
+
+# Test binary artifacts
+_test.exe
+_test.so
+
+# IDE and editor files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# Build cache
+.gotestsum/
+
+# Go-specific (but keep go.mod and go.sum)
+!go.mod
+!go.sum
+go/pkg/mod/
